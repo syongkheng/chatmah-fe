@@ -1,0 +1,12 @@
+.content-container {
+  width: 98%;
+  height: 98%;
+  background-color: #efefef;
+  border-radius: 5px;
+}
+
+.response-container {
+  max-height: 100%;
+  overflow: auto;
+}
+

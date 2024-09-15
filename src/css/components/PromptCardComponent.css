@@ -1,0 +1,30 @@
+.card-container {
+  border-radius: 5px;
+  background-color: white;
+  padding: 1vh 0 1vh 0;
+  min-height: 75px;
+
+  >.icon-container {
+    padding-left: 2vw;
+    padding-right: 2vw;
+  }
+
+  >.prompt-text-container{
+    color: #333333;
+    padding-left: 1vw;
+    padding-right: 1vw;
+    font-size: 12px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-color: #ababab;
+    max-width: 150px;
+    min-width: 150px;
+    text-align: center;
+    justify-content: center;
+  }
+  >.cta {
+    padding-left: 1vw;
+    padding-right: 1vw;
+  }
+
+}

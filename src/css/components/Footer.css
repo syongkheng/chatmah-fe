@@ -1,0 +1,31 @@
+.footer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid;
+  background-color: #dedede;
+  height: 75px;
+  align-items: center;
+  opacity: 0.9;
+
+  >.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1080px;
+    font-size: 16px;
+
+    >.primary {
+      display: flex;
+      flex-direction: row;
+    }
+
+    >.secondary {
+      display: flex;
+      flex-direction: row;
+    }
+
+  }
+}

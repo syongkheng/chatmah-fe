@@ -1,0 +1,51 @@
+.register-page-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #efefef;
+  color: #333333;
+
+  >.login-modal {
+    display: flex;
+    flex-direction: column;
+    width: 25vw;
+    max-width: 25vw;
+    padding: 2vw 2vh;
+    border-radius: 6px;
+    justify-content: center;
+
+    >.title-container {
+      >.title-text {
+        color: #333333;
+        font-size: 24px;
+      }
+    }
+
+    >.login-button-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    >.register-container{
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+.form-errors{
+  color: #CE0000;
+  margin: 3px 0;
+}
+
+@media (max-width: 586px) {
+  .register-page-container {
+    >.login-modal {
+      width: 80vw;
+      max-width: 80vw;
+    }
+  }
+}
