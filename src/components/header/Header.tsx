@@ -9,7 +9,7 @@ import { StyleButtonPrimary } from '../../styling/ButtonPrimary';
 import { AppStorageUtil } from '../../utils/AppStorageUtil';
 import SquareSpacing from '../spacing/SquareSpacing';
 import { SpacingSize } from '../spacing/SquareSpacing.enum';
-import Branding from '../../assets/logo/logo-with-bg.png';
+import Branding from '../../assets/logo/brand-bg-text.png';
 
 
 interface HeaderProps {
