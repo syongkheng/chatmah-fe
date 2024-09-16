@@ -92,7 +92,7 @@ export default function RegisterPage() {
   return (
     <>
       <Header setLocale={setLocale} />
-      <div className="page-container hc">
+      <div className="page hc">
         <div className="login-modal maxw">
           <div className="title-container">
             <span className="title-text">

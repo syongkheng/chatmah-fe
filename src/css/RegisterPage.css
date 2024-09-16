@@ -1,4 +1,4 @@
-.register-page-container {
+.register-page {
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -42,7 +42,7 @@
 }
 
 @media (max-width: 586px) {
-  .register-page-container {
+  .register-page {
     >.login-modal {
       width: 80vw;
       max-width: 80vw;

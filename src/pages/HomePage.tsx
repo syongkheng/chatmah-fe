@@ -82,7 +82,7 @@ const HomePage = () => {
   return (
     <>
       <Header setLocale={setLocale} />
-      <div className='page-container hc vc'>
+      <div className='page hc vc'>
         <div className='content-container fdc maxw'>
           <div>
             <SquareSpacing spacing={SpacingSize.Small} />

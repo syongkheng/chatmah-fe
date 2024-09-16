@@ -11,7 +11,7 @@
   justify-content: center;
   align-items: center;
   background-color: #333333;
-  opacity: 0.8;
+  /* opacity: 0.8; */
   z-index: 1000;
 
   >.content {

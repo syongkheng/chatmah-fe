@@ -87,7 +87,7 @@ export default function Header({
     <>
       <div className='header'>
         <div className='content maxw'>
-          <div className='brand'>
+          <div className='brand' onClick={() => navigate.goLanding()}>
             <img src={Branding} className='branding'/>
           </div>
           <div className='i18n-menu'>

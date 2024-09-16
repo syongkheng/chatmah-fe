@@ -46,15 +46,15 @@ export default function LoginPage() {
   return (
     <>
       <Header setLocale={setLocale} />
-      <div className="page-container hc">
-        <div className="login-modal maxw">
-          <div className="title-container">
+      <div className="page hc vc">
+        <div className="login-modal maxw vc">
+          <div className="title-container fw tal">
             <span className="title-text">
               {copywriting?.title}
             </span>
           </div>
           <SquareSpacing spacing={SpacingSize.Large} />
-          <form onSubmit={handleLogin}>
+          <form className="login-form" onSubmit={handleLogin}>
             <div>
               <TextField
                 id="username"
