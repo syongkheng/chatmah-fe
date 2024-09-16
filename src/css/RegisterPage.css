@@ -1,51 +1,46 @@
-.register-page {
-  width: 100vw;
-  height: 100vh;
+.login-modal {
   display: flex;
   flex-direction: column;
+  min-width: 200px;
+  padding: 5svh 3svw 5svh 3svw;
+  border-radius: 1rem;
   justify-content: center;
-  align-items: center;
-  background-color: #efefef;
-  color: #333333;
+  background-color: #faf9f690;
+  width: fit-content;
+  height: fit-content;
 
-  >.login-modal {
+  >.title-container {
+    >.title-text {
+      color: #333333;
+      font-size: 24px;
+    }
+  }
+
+  >.login-button-container {
     display: flex;
-    flex-direction: column;
-    width: 25vw;
-    max-width: 25vw;
-    padding: 2vw 2vh;
-    border-radius: 6px;
     justify-content: center;
+  }
 
-    >.title-container {
-      >.title-text {
-        color: #333333;
-        font-size: 24px;
-      }
-    }
+  >.register-container {
+    display: flex;
+    justify-content: center;
+  }
 
-    >.login-button-container {
-      display: flex;
-      justify-content: center;
-    }
-
-    >.register-container{
-      display: flex;
-      justify-content: center;
-    }
+  >.registration-form {
+    width: 50svh;
+    max-width: 500px;
   }
 }
 
-.form-errors{
+
+.form-errors {
   color: #CE0000;
   margin: 3px 0;
 }
 
 @media (max-width: 586px) {
-  .register-page {
-    >.login-modal {
-      width: 80vw;
-      max-width: 80vw;
-    }
+  .registration-form {
+    min-width: 200px;
+    max-width: 80vw;
   }
 }

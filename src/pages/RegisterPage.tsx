@@ -55,7 +55,8 @@ export default function RegisterPage() {
     }));
   }
 
-  const handleRegister = async () => {
+  const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     // Validate the form
     const errorList: string[] = await RegistrationUtil.validateForm(registerForm, locale as Locale);
     if (errorList.length === 0) {
@@ -92,7 +93,7 @@ export default function RegisterPage() {
   return (
     <>
       <Header setLocale={setLocale} />
-      <div className="page hc">
+      <div className="page hc vc">
         <div className="login-modal maxw">
           <div className="title-container">
             <span className="title-text">
@@ -100,54 +101,56 @@ export default function RegisterPage() {
             </span>
           </div>
           <SquareSpacing spacing={SpacingSize.Large} />
-          <div>
-            <TextField
-              id="username"
-              label={copywriting?.fields.username}
-              onBlur={() => { console.log("Check if username exists;") }}
-              size="small"
-              fullWidth
-              onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
-              autoComplete="off"
-            />
-          </div>
-          <SquareSpacing spacing={SpacingSize.Medium} />
-          <div>
-            <TextField
-              id="password"
-              label={copywriting?.fields.password}
-              size="small"
-              fullWidth
-              type="password"
-              onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
-              autoComplete="off"
-            />
-          </div>
-          <SquareSpacing spacing={SpacingSize.Small} />
-          <span className="pre-line">{copywriting?.labels.passwordComplexity}</span>
-          <SquareSpacing spacing={SpacingSize.Small} />
-          <div>
-            <TextField
-              id="confirmPassword"
-              label={copywriting?.fields.confirmPassword}
-              size="small"
-              fullWidth
-              type="password"
-              onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
-              autoComplete="off"
-            />
-          </div>
-          <SquareSpacing spacing={SpacingSize.Large} />
-          <div className="login-button-container">
-            <Button
-              id="btn-register"
-              onClick={() => handleRegister()}
-              sx={StyleButtonPrimary}
-              fullWidth
-            >
-              {copywriting?.labels.button}
-            </Button>
-          </div>
+          <form className="registration-form" onSubmit={(event) => handleRegister(event)}>
+            <div>
+              <TextField
+                id="username"
+                label={copywriting?.fields.username}
+                onBlur={() => { console.log("Check if username exists;") }}
+                size="small"
+                fullWidth
+                onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
+                autoComplete="off"
+              />
+            </div>
+            <SquareSpacing spacing={SpacingSize.Medium} />
+            <div>
+              <TextField
+                id="password"
+                label={copywriting?.fields.password}
+                size="small"
+                fullWidth
+                type="password"
+                onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
+                autoComplete="off"
+              />
+            </div>
+            <SquareSpacing spacing={SpacingSize.Small} />
+            <span className="pre-line">{copywriting?.labels.passwordComplexity}</span>
+            <SquareSpacing spacing={SpacingSize.Small} />
+            <div>
+              <TextField
+                id="confirmPassword"
+                label={copywriting?.fields.confirmPassword}
+                size="small"
+                fullWidth
+                type="password"
+                onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
+                autoComplete="off"
+              />
+            </div>
+            <SquareSpacing spacing={SpacingSize.Large} />
+            <div className="login-button-container">
+              <Button
+                id="btn-register"
+                type="submit"
+                sx={StyleButtonPrimary}
+                fullWidth
+              >
+                {copywriting?.labels.button}
+              </Button>
+            </div>
+          </form>
           <SquareSpacing spacing={SpacingSize.Medium} />
           <div className='register-container'>
             <a onClick={() => handleExistingAccount()}>{copywriting?.labels.existingAccount}</a>

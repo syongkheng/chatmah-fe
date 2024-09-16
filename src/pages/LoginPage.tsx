@@ -33,7 +33,8 @@ export default function LoginPage() {
     }));
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     try {
       await login(loginForm);
       navigate.goHome();
@@ -54,7 +55,7 @@ export default function LoginPage() {
             </span>
           </div>
           <SquareSpacing spacing={SpacingSize.Large} />
-          <form className="login-form" onSubmit={handleLogin}>
+          <form className="login-form" onSubmit={(event) => handleLogin(event)}>
             <div>
               <TextField
                 id="username"
@@ -81,7 +82,7 @@ export default function LoginPage() {
             <div className="login-button-container">
               <Button
                 id="btn-login"
-                onClick={handleLogin}
+                type="submit"
                 sx={StyleButtonPrimary}
                 fullWidth
               >
