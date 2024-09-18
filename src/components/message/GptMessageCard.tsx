@@ -10,6 +10,8 @@ import { translateContent } from '../../requests/translateContent';
 import { DateUtil } from '../../utils/DateUtil';
 import { ICodeTable } from '../../models/ICodeTable';
 import ReactMarkdown from 'react-markdown';
+import Branding from '../../assets/logo/logo-with-bg.png';
+
 
 export default function GptMessageCard({
   content,
@@ -33,42 +35,44 @@ export default function GptMessageCard({
 
   return (
     <div className="message-anchor">
-      <AdminPanelSettingsIcon className="icon" />
-      <div>
-        <div className='message-container fdc'>
-          <span className='message'>
-            <ReactMarkdown>
-              {content}
-            </ReactMarkdown>
-          </span>
-          {
-            !StringUtil.isStringEmpty(translatedContent) &&
-            <>
-              <hr />
+      <div className='fdr response-msg-bg'>
+        <img className="icon" src={Branding} />
+        <div className='fdc'>
+          <div className='message-container fdc'>
+            <span className='message'>
               <ReactMarkdown>
-                {translatedContent}
+                {content}
               </ReactMarkdown>
-            </>
-          }
-        </div>
-        <div className='menu'>
-          <LanguageIcon
-            id="basic-button"
-            onClick={handleClick}
-            className='clickable'
-          />
-          &nbsp;
-          <span>{'-'}</span>
-          &nbsp;
-          <span>{DateUtil.formatDateToDDMMHHMM(new Date(createdDt))}</span>
-          <AnchoredSVGMenu
-            isOpen={open}
-            svgAnchorEl={anchorEl}
-            options={translationCodeTable as ICodeTable[]}
-            handleClose={handleClose}
-            setAnchorEl={setAnchorEl}
-            _content={content}
-          />
+            </span>
+            {
+              !StringUtil.isStringEmpty(translatedContent) &&
+              <>
+                <hr />
+                <ReactMarkdown>
+                  {translatedContent}
+                </ReactMarkdown>
+              </>
+            }
+          </div>
+          <div className='menu'>
+            <LanguageIcon
+              id="basic-button"
+              onClick={handleClick}
+              className='clickable'
+            />
+            &nbsp;
+            <span>{'-'}</span>
+            &nbsp;
+            <span>{DateUtil.formatDateToDDMMHHMM(new Date(createdDt))}</span>
+            <AnchoredSVGMenu
+              isOpen={open}
+              svgAnchorEl={anchorEl}
+              options={translationCodeTable as ICodeTable[]}
+              handleClose={handleClose}
+              setAnchorEl={setAnchorEl}
+              _content={content}
+            />
+          </div>
         </div>
       </div>
     </div>
