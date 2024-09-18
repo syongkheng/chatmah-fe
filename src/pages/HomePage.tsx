@@ -1,5 +1,4 @@
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
-import MenuIcon from '@mui/icons-material/Menu';
 import { InputAdornment, TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import SideDrawerComponent from "../components/drawer/SideDrawerComponent";
@@ -73,8 +72,6 @@ const HomePage = () => {
     await retrieveMessages();
     setIsLoading(false);
   }
-
-  const openSideDrawer = () => setShowDrawer(true);
 
   const ChatBackdrop = styled.div`
   height: 100%;

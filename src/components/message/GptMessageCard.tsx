@@ -1,5 +1,4 @@
 import '../../css/components/MessageCard.css';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { IConversationMessage } from '../../models/IConversationMessage';
 import { StringUtil } from '../../utils/StringUtil';
 import AnchoredSVGMenu from '../menu/AnchoredSVGMenu';
