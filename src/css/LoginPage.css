@@ -1,37 +1,47 @@
-  .login-modal {
-    display: flex;
-    flex-direction: column;
+@media (max-width: 586px) {
+  .login-form {
     min-width: 200px;
-    width: 100%;
-    padding: 0 3vw 0 3vw;
-    border-radius: 6px;
+    width: 80vw;
+  }
+}
+
+
+.login-modal {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  padding: 5svh 3svw 5svh 3svw;
+  border-radius: 1rem;
+  justify-content: center;
+  background-color: #faf9f690;
+  width: fit-content;
+  height: fit-content;
+
+
+  >.title-container {
+    text-align: left;
+
+    >.title-text {
+      color: #333333;
+      font-size: 24px;
+      width: fit-content;
+    }
+  }
+
+  >.login-button-container {
+    display: flex;
     justify-content: center;
-
-    >.title-container {
-      text-align: left;
-      >.title-text {
-        color: #333333;
-        font-size: 24px;
-        width: fit-content;
-      }
-    }
-
-    >.login-button-container {
-      display: flex;
-      justify-content: center;
-    }
-
-    >.register-container {
-      display: flex;
-      justify-content: center;
-    }
   }
 
-  @media (max-width: 586px) {
-    .login-page-container {
-      >.login-modal {
-        min-width: 200px;
-        max-width: 80vw;
-      }
+  >.register-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media(min-width: 586px) {
+    >.login-form {
+      max-width: 500px;
+      width: 50svh;
     }
   }
+}

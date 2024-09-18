@@ -1,16 +1,18 @@
-import { Button } from '@mui/material';
 import React from 'react';
 import Header from '../components/header/Header';
-import SquareSpacing from '../components/spacing/SquareSpacing';
-import { SpacingSize } from '../components/spacing/SquareSpacing.enum';
 import { defaultLandingPageCopywriting, ILandingPageCopywriting } from '../copywriting/interfaces/ILandingPage';
 import '../css/LandingPage.css';
 import { Locale, StorageKeys } from '../enums';
-import { useChangingConversationLabel } from '../hooks/useChangingConversationLabel';
 import { useCopywritingFromFile } from '../hooks/useCopywritingFromFile';
 import useNavigation from '../hooks/useNavigation';
-import { StyleButtonPrimary } from '../styling/ButtonPrimary';
 import { AppStorageUtil } from '../utils/AppStorageUtil';
+import SquareSpacing from '../components/spacing/SquareSpacing';
+import { SpacingSize } from '../components/spacing/SquareSpacing.enum';
+import { Button } from '@mui/material';
+import { StyleButtonPrimary } from '../styling/ButtonPrimary';
+import Typewriter from '../components/animations/TypewriterEffect';
+import { H1 } from '../components/styles/HeadingComponents';
+import ReactMarkdown from 'react-markdown';
 
 export default function LandingPage() {
   const navigate = useNavigation();
@@ -24,27 +26,34 @@ export default function LandingPage() {
   return (
     <>
       <Header setLocale={setLocale} />
-      <div className='page-container hc vc'>
-        <div className='row hc fh fdc'>
-          <SquareSpacing spacing={SpacingSize.ExtraLarge} />
-          <SquareSpacing spacing={SpacingSize.Medium} />
-          <h1 className='hc'>{'TRANSLATE'}</h1>
-          <h3 className='hc'>{'one'}</h3>
-          <SquareSpacing spacing={SpacingSize.Medium} />
-          <span className='hc'>{useChangingConversationLabel()}</span>
-          <SquareSpacing spacing={SpacingSize.Medium} />
-          <h3 className='hc'>{'at a time.'}</h3>
+      <div className='page hc vc fdc'>
+        <div className='fw fh maxw hc vc fdc'>
           <SquareSpacing spacing={SpacingSize.Large} />
-          <div className='row hc fdc banner' onClick={navigate.goLogin}>
-            <Button id="btnTryNow" sx={StyleButtonPrimary}>
-              <div className='fdc'>
-                <SquareSpacing spacing={SpacingSize.Small} />
-                <span className='uc'>{copywriting.buttonLabel}</span>
-                <SquareSpacing spacing={SpacingSize.Small} />
+          <div className='fw fh vc hc fdc'>
+            <ReactMarkdown className='tal' components={{
+              p: ({ children }) => <H1 color='#ffffff90' fontSize='3rem'>{children}</H1>, // Render paragraphs as H1
+              br: () => <br />
+            }}>
+              {copywriting.prompt}
+            </ReactMarkdown>
+            <div className='fdc vc'>
+            <SquareSpacing spacing={SpacingSize.Medium} />
+
+              <div className='attn vc'>
+                <Typewriter text={copywriting.typewriterText} color={'#ffffff90'} fontSize={24} speed={500} locale={locale as Locale} />
               </div>
-            </Button>
+              <div className='pr'>
+              </div>
+              <SquareSpacing spacing={SpacingSize.Medium} />
+              <Button
+                id="btn_mock_send"
+                sx={StyleButtonPrimary}
+                onClick={() => navigate.goLogin()}
+              >
+                {copywriting.buttonLabel}
+              </Button>
+            </div>
           </div>
-          <SquareSpacing spacing={SpacingSize.Medium} />
         </div>
       </div>
     </>

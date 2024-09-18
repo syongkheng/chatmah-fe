@@ -9,7 +9,7 @@ import { StyleButtonPrimary } from '../../styling/ButtonPrimary';
 import { AppStorageUtil } from '../../utils/AppStorageUtil';
 import SquareSpacing from '../spacing/SquareSpacing';
 import { SpacingSize } from '../spacing/SquareSpacing.enum';
-import Branding from '../../assets/logo/logo-with-bg.png';
+import Branding from '../../assets/logo/brand-bg-text.png';
 
 
 interface HeaderProps {
@@ -84,10 +84,10 @@ export default function Header({
 
 
   return (
-    <>
+    <header>
       <div className='header'>
         <div className='content maxw'>
-          <div className='brand'>
+          <div className='brand clickable' onClick={() => navigate.goLanding()}>
             <img src={Branding} className='branding'/>
           </div>
           <div className='i18n-menu'>
@@ -150,6 +150,6 @@ export default function Header({
           </div>
         </div>
       </Drawer>
-    </>
+    </header>
   )
 }

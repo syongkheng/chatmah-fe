@@ -1,13 +1,10 @@
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import MenuIcon from '@mui/icons-material/Menu';
 import { InputAdornment, TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import SideDrawerComponent from "../components/drawer/SideDrawerComponent";
 import Header from "../components/header/Header";
 import LoadingComponent from "../components/loader/LoadingComponent";
 import MessageCard from '../components/message/MessageCard';
-import PromptCardComponent from "../components/prompt/PromptCardComponent";
 import SquareSpacing from "../components/spacing/SquareSpacing";
 import { SpacingSize } from "../components/spacing/SquareSpacing.enum";
 import CodeTableConstants from '../constants/CodeTableConstants';
@@ -23,6 +20,7 @@ import { retrieveCodeTable } from '../requests/retrieveCodeTable';
 import { retrieveMessages } from '../requests/retrieveMessages';
 import { submitPrompt } from '../requests/submitPrompt';
 import { AppStorageUtil } from "../utils/AppStorageUtil";
+import styled from 'styled-components';
 
 interface IHomePageCodeTableResult {
   ddl_translation: ICodeTable[],
@@ -34,7 +32,6 @@ const HomePage = () => {
   const [payload, setPayload] = React.useState<IMessagePayload>(defaultMessagePayload);
   const [copywriting, setCopywriting] = React.useState<IHomePageCopywriting>(defaultHomePageCopywriting);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [displayPrompt, setDisplayPrompt] = React.useState<boolean>(true);
   const [showDrawer, setShowDrawer] = React.useState<boolean>(false);
   const [codeTableResult, setCodeTableResult] = React.useState<IHomePageCodeTableResult>({
     ddl_translation: [],
@@ -67,7 +64,6 @@ const HomePage = () => {
     if (_payload?.message?.length === 0 || _payload?.message === null || _payload?.message === undefined) {
       return;
     }
-    setDisplayPrompt(false);
     await setIsLoading(true);
     await submitPrompt(_payload);
     setPayload({ message: '' })
@@ -77,14 +73,40 @@ const HomePage = () => {
     setIsLoading(false);
   }
 
-  const openSideDrawer = () => setShowDrawer(true);
+  const ChatBackdrop = styled.div`
+  height: 100%;
+  overflow: auto;
+
+  /* WebKit scrollbar styles */
+  &::-webkit-scrollbar {
+    width: 12px; /* for vertical scrollbar */
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Track color changed to transparent */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888; /* Handle color */
+    border-radius: 6px; /* Rounded corners */
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker handle on hover */
+  }
+
+  /* Firefox scrollbar styles */
+  scrollbar-width: thin; /* Options: auto, thin, none */
+  scrollbar-color: #888 transparent; /* Handle color and track color changed to transparent */
+`;
+
 
   return (
     <>
       <Header setLocale={setLocale} />
-      <div className='page-container hc vc'>
+      <div className='page hc vc'>
         <div className='content-container fdc maxw'>
-          <div>
+          {/* <div>
             <SquareSpacing spacing={SpacingSize.Small} />
             <div className="top fdr jc-sb">
               <div className="fdr" onClick={() => openSideDrawer()}>
@@ -93,45 +115,28 @@ const HomePage = () => {
               </div>
               {copywriting?.banner?.assistant}
               <div className="fdr">
-                {/* <AddIcon /> */}
                 <SquareSpacing spacing={SpacingSize.Small} />
               </div>
             </div>
             <SquareSpacing spacing={SpacingSize.Small} />
-          </div>
-          <div className="fit-parent hc vc fdc response-container">
+          </div> */}
+          <ChatBackdrop>
             {
-              displayPrompt
-                ?
-                <div>
-                  <PromptCardComponent
-                    icon={<LocalShippingIcon />}
-                    content={copywriting?.promptTrip?.label}
-                    onClickHandler={handleSendRequest}
-                  />
-                  <br />
-                  <PromptCardComponent
-                    icon={<LocalShippingIcon />}
-                    content={copywriting?.promptLearn?.label}
-                    onClickHandler={handleSendRequest}
-                  />
-                </div>
-                :
-                messages.length > 0 && messages?.sort((a: IConversationMessage, b: IConversationMessage) => new Date(a.createdDt).getTime() - new Date(b.createdDt).getTime())
-                  .map((msg, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        <MessageCard
-                          createdDt={msg.createdDt}
-                          content={msg.content}
-                          isSender={msg.isSender}
-                          translationCodeTable={codeTableResult?.ddl_translation}
-                        />
-                      </React.Fragment>
-                    )
-                  })
+              messages.length > 0 && messages?.sort((a: IConversationMessage, b: IConversationMessage) => new Date(a.createdDt).getTime() - new Date(b.createdDt).getTime())
+                .map((msg, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      <MessageCard
+                        createdDt={msg.createdDt}
+                        content={msg.content}
+                        isSender={msg.isSender}
+                        translationCodeTable={codeTableResult?.ddl_translation}
+                      />
+                    </React.Fragment>
+                  )
+                })
             }
-          </div>
+          </ChatBackdrop>
           <div>
             <div className="fw hc fdr">
               <SquareSpacing spacing={SpacingSize.Small} />
@@ -139,9 +144,9 @@ const HomePage = () => {
                 id="message"
                 className="bg-white"
                 size="small"
-                label={copywriting?.inputLabel?.prompt}
                 onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
                 autoComplete="off"
+                placeholder={copywriting?.inputLabel?.prompt}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end" >

@@ -1,3 +1,4 @@
+import { ILoginPageCopywriting } from "../interfaces/ILoginPage";
 
 export default function copywritingEn() {
   const title = 'Welcome,';
@@ -9,12 +10,16 @@ export default function copywritingEn() {
     button: 'Login',
     noExistingAccount: 'No Account?',
   }
+  const response = {
+    invalidCredentials: 'Invalid Credentials',
+  }
 
   // const forgetPasswordLabel = 'Forget Password?'
 
   return { 
     title,
     fields,
-    labels
-  };
+    labels,
+    response
+  } as ILoginPageCopywriting;
 }
