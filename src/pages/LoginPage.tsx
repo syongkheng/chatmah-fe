@@ -13,12 +13,14 @@ import { defaultLoginForm, ILoginForm } from "../models/ILoginForm";
 import { login } from "../requests/login";
 import { StyleButtonPrimary } from "../styling/ButtonPrimary";
 import { AppStorageUtil } from "../utils/AppStorageUtil";
+import { ErrorMessages } from "../components/styles/MessageComponents";
 
 export default function LoginPage() {
 
   const navigate = useNavigation();
   const [locale, setLocale] = React.useState<string>(AppStorageUtil.getLocal(StorageKeys.Locale) ?? Locale.en);
   const [copywriting, setCopywriting] = React.useState<ILoginPageCopywriting>(defaultLoginPageCopywriting);
+  const [loginError, setLoginError] = React.useState<string>('');
 
   React.useEffect(() => {
     useCopywritingFromFile<ILoginPageCopywriting>(locale, CopywritingConstants.PAGES.LOGIN).then(setCopywriting);
@@ -35,13 +37,14 @@ export default function LoginPage() {
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    try {
-      await login(loginForm);
+
+    const loginSuccess = await login(loginForm);
+    if (loginSuccess) {
       navigate.goHome();
-    } catch (err) {
-      // TODO: Display error
-      console.error("Error: ", err);
+    } else {
+      setLoginError(copywriting.response.invalidCredentials)
     }
+
   };
 
   return (
@@ -90,6 +93,15 @@ export default function LoginPage() {
               </Button>
             </div>
           </form>
+          {
+            loginError && (
+              <>
+                <SquareSpacing spacing={SpacingSize.Medium} />
+                <ErrorMessages>{loginError}</ErrorMessages>
+              </>
+
+            )
+          }
           <SquareSpacing spacing={SpacingSize.Medium} />
           <div className='register-container'>
             <a onClick={() => navigate.goRegister()}>{copywriting?.labels.noExistingAccount}</a>

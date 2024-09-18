@@ -94,7 +94,7 @@ export default function RegisterPage() {
     <>
       <Header setLocale={setLocale} />
       <div className="page hc vc">
-        <div className="login-modal maxw">
+        <div className="register-modal maxw">
           <div className="title-container">
             <span className="title-text">
               {copywriting?.title}
@@ -155,7 +155,6 @@ export default function RegisterPage() {
           <div className='register-container'>
             <a onClick={() => handleExistingAccount()}>{copywriting?.labels.existingAccount}</a>
           </div>
-
           {
             formErrors?.length > 0 && formErrors?.map((error, index) => {
               return (

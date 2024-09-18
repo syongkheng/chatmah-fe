@@ -48,8 +48,6 @@ export default function GptMessageCard({
               <ReactMarkdown>
                 {translatedContent}
               </ReactMarkdown>
-              <hr />
-
             </>
           }
         </div>

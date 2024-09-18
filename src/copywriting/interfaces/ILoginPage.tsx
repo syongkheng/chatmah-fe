@@ -8,6 +8,9 @@ export interface ILoginPageCopywriting {
     button: string;
     noExistingAccount: string;
   }
+  response: {
+    invalidCredentials: string;
+  }
 }
 
 export const defaultLoginPageCopywriting: ILoginPageCopywriting = {
@@ -19,5 +22,8 @@ export const defaultLoginPageCopywriting: ILoginPageCopywriting = {
   labels: {
     button: '',
     noExistingAccount: '',
+  },
+  response: {
+    invalidCredentials: '',
   }
 }

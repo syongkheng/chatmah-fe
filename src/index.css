@@ -223,3 +223,13 @@ hr {
 .maxw {
   max-width: 1080px;
 }
+
+.pr{
+  margin-left: auto;
+}
+
+@media (max-width: 586px) {
+  .page {
+    padding: 0 2svw;
+  }
+}

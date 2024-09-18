@@ -84,10 +84,10 @@ export default function Header({
 
 
   return (
-    <>
+    <header>
       <div className='header'>
         <div className='content maxw'>
-          <div className='brand' onClick={() => navigate.goLanding()}>
+          <div className='brand clickable' onClick={() => navigate.goLanding()}>
             <img src={Branding} className='branding'/>
           </div>
           <div className='i18n-menu'>
@@ -150,6 +150,6 @@ export default function Header({
           </div>
         </div>
       </Drawer>
-    </>
+    </header>
   )
 }

@@ -4,7 +4,6 @@
   left: 0;
   right: 0;
   overflow-y: hidden;
-  padding: 0 2vw;
   height: 60px;
   width: 100svw;
   display: flex;
@@ -20,11 +19,11 @@
     justify-content: space-between;
     width: 100%;
     font-size: 16px;
+    padding: 0;
 
     >.brand {
       display: flex;
       align-items: center;
-
 
       >.branding {
         height: 35px;
@@ -61,4 +60,15 @@
 
 .selection {
   width: 100%;
+}
+
+
+@media (max-width: 586px) {
+  header{
+    >.header{
+      >.content {
+        padding: 0 2svw;
+      }
+    }
+  }
 }

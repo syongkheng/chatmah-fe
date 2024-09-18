@@ -1,4 +1,4 @@
-.login-modal {
+.register-modal {
   display: flex;
   flex-direction: column;
   min-width: 200px;
@@ -26,9 +26,11 @@
     justify-content: center;
   }
 
-  >.registration-form {
-    width: 50svh;
-    max-width: 500px;
+  @media (min-width: 586px) {
+    >.registration-form {
+      width: 50svh;
+      max-width: 500px;
+    }
   }
 }
 
@@ -41,6 +43,6 @@
 @media (max-width: 586px) {
   .registration-form {
     min-width: 200px;
-    max-width: 80vw;
+    width: 80vw;
   }
 }
