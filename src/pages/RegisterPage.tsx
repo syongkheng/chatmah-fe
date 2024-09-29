@@ -1,21 +1,26 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import Header from "../components/header/Header";
 import ModalComponent, { IModalContent } from "../components/modal/ModalComponent";
 import SquareSpacing from "../components/spacing/SquareSpacing";
 import { SpacingSize } from "../components/spacing/SquareSpacing.enum";
+import { H1 } from "../components/styled/HeadingComponents";
+import { ErrorMessages } from "../components/styled/MessageComponents";
+import StyledButton from "../components/styled/buttons/ButtonComponents";
+import { StyledPage } from "../components/styled/pages/StyledPage";
+import { Hyperlink, PreserveWhitespace } from "../components/styled/typography/Typography";
 import CopywritingConstants from "../constants/PageConstants";
 import { defaultRegisterPageCopywriting, IRegisterPageCopywriting } from "../copywriting/interfaces/IRegisterPage";
-import "../css/RegisterPage.css";
 import { Locale, StorageKeys } from "../enums";
 import { useCopywritingFromFile } from "../hooks/useCopywritingFromFile";
 import useNavigation from "../hooks/useNavigation";
 import { defaultRegisterForm, IRegisterForm } from "../models/IRegisterForm";
 import { register } from "../requests/register";
-import { StyleButtonPrimary } from "../styling/ButtonPrimary";
 import { AppStorageUtil } from "../utils/AppStorageUtil";
 import { FormUtil } from "../utils/FormUtil";
 import { RegistrationUtil } from "../utils/RegistrationUtil";
+import { FullWidthBox, HorizontalCenter } from "../components/styled/alignment/AlignmentComponents";
+import { StyledModal } from "../components/styled/modals/ModalComponents";
 
 export default function RegisterPage() {
 
@@ -93,16 +98,12 @@ export default function RegisterPage() {
   return (
     <>
       <Header setLocale={setLocale} />
-      <div className="page hc vc">
-        <div className="register-modal maxw">
-          <div className="title-container">
-            <span className="title-text">
-              {copywriting?.title}
-            </span>
-          </div>
+      <StyledPage $horizontalCenter $verticalCenter>
+        <StyledModal>
+          <H1>{copywriting?.title}</H1>
           <SquareSpacing spacing={SpacingSize.Large} />
-          <form className="registration-form" onSubmit={(event) => handleRegister(event)}>
-            <div>
+          <FullWidthBox>
+            <form onSubmit={(event) => handleRegister(event)}>
               <TextField
                 id="username"
                 label={copywriting?.fields.username}
@@ -112,9 +113,7 @@ export default function RegisterPage() {
                 onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
                 autoComplete="off"
               />
-            </div>
-            <SquareSpacing spacing={SpacingSize.Medium} />
-            <div>
+              <SquareSpacing spacing={SpacingSize.Medium} />
               <TextField
                 id="password"
                 label={copywriting?.fields.password}
@@ -124,11 +123,9 @@ export default function RegisterPage() {
                 onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
                 autoComplete="off"
               />
-            </div>
-            <SquareSpacing spacing={SpacingSize.Small} />
-            <span className="pre-line">{copywriting?.labels.passwordComplexity}</span>
-            <SquareSpacing spacing={SpacingSize.Small} />
-            <div>
+              <SquareSpacing spacing={SpacingSize.Small} />
+              <PreserveWhitespace >{copywriting?.labels.passwordComplexity}</PreserveWhitespace>
+              <SquareSpacing spacing={SpacingSize.Small} />
               <TextField
                 id="confirmPassword"
                 label={copywriting?.fields.confirmPassword}
@@ -138,41 +135,38 @@ export default function RegisterPage() {
                 onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
                 autoComplete="off"
               />
-            </div>
-            <SquareSpacing spacing={SpacingSize.Large} />
-            <div className="login-button-container">
-              <Button
+              <SquareSpacing spacing={SpacingSize.Large} />
+              <StyledButton
+                primary
                 id="btn-register"
                 type="submit"
-                sx={StyleButtonPrimary}
                 fullWidth
               >
                 {copywriting?.labels.button}
-              </Button>
-            </div>
-          </form>
-          <SquareSpacing spacing={SpacingSize.Medium} />
-          <div className='register-container'>
-            <a onClick={() => handleExistingAccount()}>{copywriting?.labels.existingAccount}</a>
-          </div>
-          {
-            formErrors?.length > 0 && formErrors?.map((error, index) => {
-              return (
-                <div className="form-errors" key={index}>
-                  {error}
-                </div>
-              )
-            })
-          }
-        </div>
-      </div>
+              </StyledButton>
+            </form>
+            <SquareSpacing spacing={SpacingSize.Medium} />
+            <HorizontalCenter>
+              <Hyperlink onClick={() => handleExistingAccount()}>{copywriting?.labels.existingAccount}</Hyperlink>
+            </HorizontalCenter>
+            {
+              formErrors?.length > 0 && formErrors?.map((error, index) => {
+                return (
+                  <ErrorMessages key={index}>
+                    {error}
+                  </ErrorMessages>
+                )
+              })
+            }
+          </FullWidthBox>
+        </StyledModal>
+      </StyledPage>
       <ModalComponent
         show={showRegistrationModal}
         setShow={setShowRegistrationModal}
         title={modalContent?.title}
         bodyContent={modalContent?.bodyContent}
         onSuccessHandler={modalContent?.onSuccessHandler}
-        successButtonLabel={modalContent?.successButtonLabel}
         cancelButtonLabel={modalContent?.cancelButtonLabel}
       />
     </>

@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../css/components/MessageCard.css';
 import { IConversationMessage } from "../../models/IConversationMessage";
 import GptMessageCard from './GptMessageCard';
 import UserMessageCard from './UserMessageCard';

@@ -1,10 +1,11 @@
-import { Button, Modal } from "@mui/material";
 import React from "react";
-import '../../css/components/ModalComponent.css'
-import { StyleButtonPrimary } from "../../styling/ButtonPrimary";
-import { StyleButtonSecondary } from "../../styling/ButtonSecondary";
 import SquareSpacing from "../spacing/SquareSpacing";
 import { SpacingSize } from "../spacing/SquareSpacing.enum";
+import StyledButton from "../styled/buttons/ButtonComponents";
+import { FlexDirectionRow, HorizontalCenter, SpaceBetween } from "../styled/alignment/AlignmentComponents";
+import { StyledMuiModal } from "../styled/modals/ModalComponents";
+import { H1 } from "../styled/HeadingComponents";
+import { StyledText } from "../styled/typography/Typography";
 
 export interface IModalComponent extends IModalContent {
   show: boolean;
@@ -33,21 +34,19 @@ export default function ModalComponent({
   const handleCloseButton = () => {
     setShow(false);
   }
+
   return (
-    <Modal open={show}>
-      <div className="modal-container">
-        <div className="title">
-          {title}
-        </div>
+    <StyledMuiModal open={show}>
+      <StyledMuiModal.Backdrop>
+        <H1>{title}</H1>
         <SquareSpacing spacing={SpacingSize.Large} />
         {
           bodyContent.length > 0 && bodyContent.map((content, index) => {
-
             return (
-              <div key={index}>
+              <StyledText key={index}>
                 {content}
                 <SquareSpacing spacing={SpacingSize.Small} />
-              </div>
+              </StyledText>
             )
           })
         }
@@ -55,38 +54,41 @@ export default function ModalComponent({
         {
           cancelButtonOnly
             ? (
-              <div>
-                <Button
+              <HorizontalCenter>
+                <StyledButton
+                  secondary
+                  fullWidth
                   onClick={handleCloseButton}
-                  sx={StyleButtonSecondary}
                 >
                   {cancelButtonLabel}
-                </Button>
-              </div>
+                </StyledButton>
+              </HorizontalCenter>
+
             )
-            : (<div className="button-container">
-              <div>
-                <Button
-                  onClick={handleCloseButton}
-                  sx={StyleButtonSecondary}
-                >
-                  {cancelButtonLabel}
-                </Button>
-              </div>
-              <SquareSpacing spacing={SpacingSize.Large} />
-              <div>
-
-                <Button
-                  onClick={onSuccessHandler}
-                  sx={StyleButtonPrimary}
-                >
-                  {successButtonLabel}
-                </Button>
-              </div>
-            </div>)
+            :
+            (
+              <FlexDirectionRow>
+                <SpaceBetween>
+                  <StyledButton
+                    secondary
+                    onClick={handleCloseButton}
+                    fullWidth
+                  >
+                    {cancelButtonLabel}
+                  </StyledButton>
+                  <SquareSpacing spacing={SpacingSize.Medium} />
+                  <StyledButton
+                    primary
+                    onClick={onSuccessHandler}
+                    fullWidth
+                  >
+                    {successButtonLabel}
+                  </StyledButton>
+                </SpaceBetween>
+              </FlexDirectionRow>
+            )
         }
-
-      </div>
-    </Modal >
+      </StyledMuiModal.Backdrop>
+    </StyledMuiModal >
   )
 }
