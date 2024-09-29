@@ -1,30 +1,27 @@
+import React from "react";
+
 export interface IHomePageCopywriting {
   banner: IHomePageBanner;
-  promptTrip: IHomePagePrompt;
-  promptLearn: IHomePagePrompt;
+  prompt: IHomePagePrompt[];
   inputLabel: IHomePageInputLabel;
 }
 
 export const defaultHomePageCopywriting: IHomePageCopywriting = {
   banner: {
-    assistant: '',
+    primary: '',
   },
-  promptTrip: {
-    label: ''
-  },
-  promptLearn: {
-    label: ''
-  },
+  prompt: [],
   inputLabel: {
     prompt: ''
   }
 }
 
 export interface IHomePageBanner {
-  assistant: string;
+  primary: string;
 }
 
 export interface IHomePagePrompt {
+  icon: React.ReactNode;
   label: string;
 }
 

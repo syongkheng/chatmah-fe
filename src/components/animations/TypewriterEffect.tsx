@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Locale } from '../../enums';
-import { TypewriterEffect } from '../styles/TypewriterComponents';
+import { TypewriterEffect } from '../styled/TypewriterComponents';
 
 interface ITypewriter {
   text: string[]; // Array of strings to type

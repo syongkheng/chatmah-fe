@@ -1,19 +1,23 @@
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import Header from "../components/header/Header";
 import SquareSpacing from "../components/spacing/SquareSpacing";
 import { SpacingSize } from "../components/spacing/SquareSpacing.enum";
 import CopywritingConstants from "../constants/PageConstants";
 import { defaultLoginPageCopywriting, ILoginPageCopywriting } from "../copywriting/interfaces/ILoginPage";
-import "../css/LoginPage.css";
 import { Locale, StorageKeys } from "../enums";
 import { useCopywritingFromFile } from "../hooks/useCopywritingFromFile";
 import useNavigation from "../hooks/useNavigation";
 import { defaultLoginForm, ILoginForm } from "../models/ILoginForm";
 import { login } from "../requests/login";
-import { StyleButtonPrimary } from "../styling/ButtonPrimary";
 import { AppStorageUtil } from "../utils/AppStorageUtil";
-import { ErrorMessages } from "../components/styles/MessageComponents";
+import { ErrorMessages } from "../components/styled/MessageComponents";
+import { StyledPage } from "../components/styled/pages/StyledPage";
+import { H1 } from "../components/styled/HeadingComponents";
+import { StyledModal } from "../components/styled/modals/ModalComponents";
+import { HorizontalCenter } from "../components/styled/alignment/AlignmentComponents";
+import { Hyperlink } from "../components/styled/typography/Typography";
+import StyledButton from "../components/styled/buttons/ButtonComponents";
 
 export default function LoginPage() {
 
@@ -50,65 +54,57 @@ export default function LoginPage() {
   return (
     <>
       <Header setLocale={setLocale} />
-      <div className="page hc vc">
-        <div className="login-modal maxw vc">
-          <div className="title-container fw tal">
-            <span className="title-text">
-              {copywriting?.title}
-            </span>
-          </div>
+      <StyledPage $horizontalCenter $verticalCenter>
+        <StyledModal>
+          <H1>{copywriting?.title}</H1>
           <SquareSpacing spacing={SpacingSize.Large} />
           <form className="login-form" onSubmit={(event) => handleLogin(event)}>
-            <div>
-              <TextField
-                id="username"
-                label={copywriting?.fields?.username}
-                size="small"
-                fullWidth
-                onChange={handleTextChange}
-                autoComplete="off"
-              />
-            </div>
+            <TextField
+              id="username"
+              label={copywriting?.fields?.username}
+              size="small"
+              fullWidth
+              onChange={handleTextChange}
+              autoComplete="off"
+            />
             <SquareSpacing spacing={SpacingSize.Medium} />
-            <div>
-              <TextField
-                id="password"
-                label={copywriting?.fields?.password}
-                size="small"
-                fullWidth
-                type="password"
-                onChange={handleTextChange}
-                autoComplete="off"
-              />
-            </div>
+            <TextField
+              id="password"
+              label={copywriting?.fields?.password}
+              size="small"
+              fullWidth
+              type="password"
+              onChange={handleTextChange}
+              autoComplete="off"
+            />
             <SquareSpacing spacing={SpacingSize.Large} />
-            <div className="login-button-container">
-              <Button
-                id="btn-login"
-                type="submit"
-                sx={StyleButtonPrimary}
-                fullWidth
-              >
-                {copywriting?.labels.button}
-              </Button>
-            </div>
+            <StyledButton
+              primary
+              id="btn-login"
+              type="submit"
+              fullWidth
+            >
+              {copywriting?.labels.button}
+            </StyledButton>
           </form>
           {
             loginError && (
               <>
                 <SquareSpacing spacing={SpacingSize.Medium} />
-                <ErrorMessages>{loginError}</ErrorMessages>
+                <HorizontalCenter>
+                  <ErrorMessages>{loginError}</ErrorMessages>
+                </HorizontalCenter>
               </>
 
             )
           }
           <SquareSpacing spacing={SpacingSize.Medium} />
-          <div className='register-container'>
-            <a onClick={() => navigate.goRegister()}>{copywriting?.labels.noExistingAccount}</a>
-          </div>
+          <HorizontalCenter>
+            <Hyperlink onClick={() => navigate.goRegister()}>{copywriting?.labels.noExistingAccount}</Hyperlink>
+          </HorizontalCenter>
           <SquareSpacing spacing={SpacingSize.Small} />
-        </div>
-      </div>
+        </StyledModal>
+      </StyledPage>
     </>
   );
 }

@@ -1,13 +1,14 @@
-import React from 'react';
 import LanguageIcon from '@mui/icons-material/Language';
-import '../../css/components/MessageCard.css';
+import React from 'react';
+import { ICodeTable } from '../../models/ICodeTable';
 import { IConversationMessage } from "../../models/IConversationMessage";
 import { ITranslateMessagePayload } from '../../models/ITranslateMessagePayload';
 import { translateContent } from '../../requests/translateContent';
+import { DateUtil } from '../../utils/DateUtil';
 import { StringUtil } from '../../utils/StringUtil';
 import AnchoredSVGMenu from '../menu/AnchoredSVGMenu';
-import { ICodeTable } from '../../models/ICodeTable';
-import { DateUtil } from '../../utils/DateUtil';
+import { FlexDirectionColumn, FlexDirectionRow } from '../styled/alignment/AlignmentComponents';
+import { StyledMessageCard } from '../styled/messages/MessageComponents';
 
 export default function UserMessageCard({
   content,
@@ -36,42 +37,45 @@ export default function UserMessageCard({
   }, [content]);
 
   return (
-    <div className='message-anchor reverse'>
-      <div className='message-right-padding'>
-        <div className='message-container-user'>
-          <span className='message'>
-            {content}
-          </span>
-          {
-            !StringUtil.isStringEmpty(translatedContent) &&
-            <>
-              <hr />
-              <span>
-                {translatedContent}
-              </span>
-            </>
-          }
-        </div>
-        <div className='menu-user vc'>
-          <LanguageIcon
-            id="basic-button"
-            onClick={handleClick}
-            className='clickable'
-          />
-          &nbsp;
-          <span>{'-'}</span>
-          &nbsp;
-          <span>{DateUtil.formatDateToDDMMHHMM(new Date(createdDt))}</span>
-          <AnchoredSVGMenu
-            isOpen={open}
-            svgAnchorEl={anchorEl}
-            options={translationCodeTable as ICodeTable[]}
-            handleClose={handleClose}
-            setAnchorEl={setAnchorEl}
-            _content={content}
-          />
-        </div>
-      </div>
-    </div>
+    <>
+      <FlexDirectionRow $reverse>
+        <StyledMessageCard $isUser>
+          <FlexDirectionColumn>
+            <StyledMessageCard.ContentBackdrop $isUser>
+              {content}
+              {
+                !StringUtil.isStringEmpty(translatedContent) &&
+                <>
+                  <hr />
+                  <span>
+                    {translatedContent}
+                  </span>
+                </>
+              }
+            </StyledMessageCard.ContentBackdrop>
+            <FlexDirectionRow $reverse>
+              <LanguageIcon
+                id="basic-button"
+                onClick={handleClick}
+                className='clickable'
+              />
+              &nbsp;
+              <span>{'-'}</span>
+              &nbsp;
+              <span>{DateUtil.formatDateToDDMMHHMM(new Date(createdDt))}</span>
+            </FlexDirectionRow>
+
+          </FlexDirectionColumn>
+        </StyledMessageCard>
+      </FlexDirectionRow>
+      <AnchoredSVGMenu
+        isOpen={open}
+        svgAnchorEl={anchorEl}
+        options={translationCodeTable as ICodeTable[]}
+        handleClose={handleClose}
+        setAnchorEl={setAnchorEl}
+        _content={content}
+      />
+    </>
   )
 }

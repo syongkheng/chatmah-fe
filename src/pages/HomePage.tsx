@@ -1,16 +1,16 @@
-import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
-import { InputAdornment, TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
-import SideDrawerComponent from "../components/drawer/SideDrawerComponent";
 import Header from "../components/header/Header";
-import LoadingComponent from "../components/loader/LoadingComponent";
+import GptPromptTextInput from '../components/inputs/GptPromptTextInput';
 import MessageCard from '../components/message/MessageCard';
 import SquareSpacing from "../components/spacing/SquareSpacing";
 import { SpacingSize } from "../components/spacing/SquareSpacing.enum";
+import { FlexDirectionColumn, FlexDirectionRow, FullWidthBox, HorizontalCenter, VerticalCenter } from '../components/styled/alignment/AlignmentComponents';
+import { ChatBackdrop, InteractionBackdrop } from '../components/styled/backdrops/BackdropComponents';
+import { StyledPage } from '../components/styled/pages/StyledPage';
+import { StyledPromptTypography } from '../components/styled/typography/Typography';
 import CodeTableConstants from '../constants/CodeTableConstants';
 import CopywritingConstants from '../constants/PageConstants';
 import { defaultHomePageCopywriting, IHomePageCopywriting } from '../copywriting/interfaces/IHomePage';
-import "../css/HomePage.css";
 import { Locale, StorageKeys } from "../enums";
 import { useCopywritingFromFile } from '../hooks/useCopywritingFromFile';
 import { ICodeTable } from '../models/ICodeTable';
@@ -20,7 +20,7 @@ import { retrieveCodeTable } from '../requests/retrieveCodeTable';
 import { retrieveMessages } from '../requests/retrieveMessages';
 import { submitPrompt } from '../requests/submitPrompt';
 import { AppStorageUtil } from "../utils/AppStorageUtil";
-import styled from 'styled-components';
+import { SortUtil } from '../utils/SortUtil';
 
 interface IHomePageCodeTableResult {
   ddl_translation: ICodeTable[],
@@ -32,7 +32,6 @@ const HomePage = () => {
   const [payload, setPayload] = React.useState<IMessagePayload>(defaultMessagePayload);
   const [copywriting, setCopywriting] = React.useState<IHomePageCopywriting>(defaultHomePageCopywriting);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [showDrawer, setShowDrawer] = React.useState<boolean>(false);
   const [codeTableResult, setCodeTableResult] = React.useState<IHomePageCodeTableResult>({
     ddl_translation: [],
   })
@@ -58,12 +57,12 @@ const HomePage = () => {
       ...prevForm,
       [event.target.id]: event.target.value,
     }))
-  }
+  };
 
   const handleSendRequest = async (_payload: IMessagePayload = payload) => {
     if (_payload?.message?.length === 0 || _payload?.message === null || _payload?.message === undefined) {
       return;
-    }
+    };
     await setIsLoading(true);
     await submitPrompt(_payload);
     setPayload({ message: '' })
@@ -71,109 +70,71 @@ const HomePage = () => {
     setMessages(messages);
     await retrieveMessages();
     setIsLoading(false);
-  }
-
-  const ChatBackdrop = styled.div`
-  height: 100%;
-  overflow: auto;
-
-  /* WebKit scrollbar styles */
-  &::-webkit-scrollbar {
-    width: 12px; /* for vertical scrollbar */
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent; /* Track color changed to transparent */
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #888; /* Handle color */
-    border-radius: 6px; /* Rounded corners */
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background: #555; /* Darker handle on hover */
-  }
-
-  /* Firefox scrollbar styles */
-  scrollbar-width: thin; /* Options: auto, thin, none */
-  scrollbar-color: #888 transparent; /* Handle color and track color changed to transparent */
-`;
-
+  };
 
   return (
     <>
       <Header setLocale={setLocale} />
-      <div className='page hc vc'>
-        <div className='content-container fdc maxw'>
-          {/* <div>
-            <SquareSpacing spacing={SpacingSize.Small} />
-            <div className="top fdr jc-sb">
-              <div className="fdr" onClick={() => openSideDrawer()}>
-                <SquareSpacing spacing={SpacingSize.Small} />
-                <MenuIcon className='clickable' />
-              </div>
-              {copywriting?.banner?.assistant}
-              <div className="fdr">
-                <SquareSpacing spacing={SpacingSize.Small} />
-              </div>
-            </div>
-            <SquareSpacing spacing={SpacingSize.Small} />
-          </div> */}
-          <ChatBackdrop>
+      <StyledPage $horizontalCenter $verticalCenter>
+        <InteractionBackdrop>
+          <FlexDirectionColumn $fullHeight>
             {
-              messages.length > 0 && messages?.sort((a: IConversationMessage, b: IConversationMessage) => new Date(a.createdDt).getTime() - new Date(b.createdDt).getTime())
-                .map((msg, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <MessageCard
-                        createdDt={msg.createdDt}
-                        content={msg.content}
-                        isSender={msg.isSender}
-                        translationCodeTable={codeTableResult?.ddl_translation}
+              messages.length === 0 && (
+                <VerticalCenter>
+                  <HorizontalCenter>
+                    <FlexDirectionColumn>
+                      <StyledPromptTypography>{copywriting.banner.primary}</StyledPromptTypography>
+                      <GptPromptTextInput
+                        handleTextChange={handleTextChange}
+                        handleSendRequest={handleSendRequest}
+                        isLoading={isLoading}
+                        placeholderText={copywriting.inputLabel.prompt}
+                        payload={payload}
                       />
-                    </React.Fragment>
-                  )
-                })
+                    </FlexDirectionColumn>
+                  </HorizontalCenter>
+                </VerticalCenter>
+              )
             }
-          </ChatBackdrop>
-          <div>
-            <div className="fw hc fdr">
-              <SquareSpacing spacing={SpacingSize.Small} />
-              <TextField
-                id="message"
-                className="bg-white"
-                size="small"
-                onChange={(event: ChangeEvent<HTMLInputElement>) => handleTextChange(event)}
-                autoComplete="off"
-                placeholder={copywriting?.inputLabel?.prompt}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end" >
-                      {
-                        isLoading
-                          ? <LoadingComponent show={isLoading} /> :
-                          <div className='fw fh vc hc clickable' onClick={() => handleSendRequest()}>
-                            <KeyboardReturnIcon className="charcoal" />
-                          </div>
-                      }
-                    </InputAdornment>
-                  )
-                }}
-                value={payload.message}
-                multiline
-                fullWidth
-              />
-              <SquareSpacing spacing={SpacingSize.Small} />
-            </div>
-          </div>
-          <SquareSpacing spacing={SpacingSize.Small} />
-        </div>
-      </div>
-      <SideDrawerComponent
-        isOpen={showDrawer}
-        toggleDrawer={setShowDrawer}
-      />
+            {
+              messages.length > 0 && (
+                <>
+                  <ChatBackdrop>
+                    {
+                      SortUtil.sortArrayByKeys(messages, ['createdDt', 'isSender'], ['asc', 'asc'])
+                        .map((msg, index) => {
+                          return (
+                            <React.Fragment key={index}>
+                              <MessageCard
+                                createdDt={msg.createdDt}
+                                content={msg.content}
+                                isSender={msg.isSender}
+                                translationCodeTable={codeTableResult?.ddl_translation}
+                              />
+                            </React.Fragment>
+                          )
+                        })
+                    }
+                  </ChatBackdrop>
+                  <FullWidthBox>
+                    <FlexDirectionRow>
+                      <GptPromptTextInput
+                        handleTextChange={handleTextChange}
+                        handleSendRequest={handleSendRequest}
+                        isLoading={isLoading}
+                        placeholderText={copywriting.inputLabel.prompt}
+                        payload={payload}
+                      />
+                    </FlexDirectionRow>
+                  </FullWidthBox>
+                </>
+              )
+            }
+
+          </FlexDirectionColumn>
+        </InteractionBackdrop>
+        <SquareSpacing spacing={SpacingSize.Small} />
+      </StyledPage>
     </>
   );
 }
