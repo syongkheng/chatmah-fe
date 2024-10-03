@@ -21,12 +21,14 @@ import { retrieveMessages } from '../requests/retrieveMessages';
 import { submitPrompt } from '../requests/submitPrompt';
 import { AppStorageUtil } from "../utils/AppStorageUtil";
 import { SortUtil } from '../utils/SortUtil';
+import { AppConstants } from "../constants/AppConstants";
 
 interface IHomePageCodeTableResult {
   ddl_translation: ICodeTable[],
 }
 
 const HomePage = () => {
+  const RETRIEVE_MESSAGE_OFFSET = AppConstants.getOffset();
   const [locale, setLocale] = React.useState<string>(AppStorageUtil.getLocal(StorageKeys.Locale) ?? Locale.en);
   const [messages, setMessages] = React.useState<IConversationMessage[]>([]);
   const [payload, setPayload] = React.useState<IMessagePayload>(defaultMessagePayload);
@@ -35,6 +37,9 @@ const HomePage = () => {
   const [codeTableResult, setCodeTableResult] = React.useState<IHomePageCodeTableResult>({
     ddl_translation: [],
   })
+  const backdropRef = React.useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = React.useState<number>(RETRIEVE_MESSAGE_OFFSET);
+
 
   React.useEffect(() => {
     useCopywritingFromFile<IHomePageCopywriting>(locale, CopywritingConstants.PAGES.HOME).then(setCopywriting);
@@ -68,8 +73,26 @@ const HomePage = () => {
     setPayload({ message: '' })
     const messages = await retrieveMessages();
     setMessages(messages);
+    if (backdropRef.current && messages.length === RETRIEVE_MESSAGE_OFFSET) {
+      console.log("Should scroll");
+      backdropRef.current.scrollTop = backdropRef.current.scrollHeight;
+    }
     await retrieveMessages();
     setIsLoading(false);
+  };
+
+  const handleScroll = async () => {
+    if (backdropRef.current && backdropRef.current.scrollTop === 0 && !isLoading) {
+      setIsLoading(true);
+      setOffset((prevOffset) => prevOffset + RETRIEVE_MESSAGE_OFFSET); // Increment the offset
+      const newMessages = await retrieveMessages(offset);
+
+
+      const sortedWholeArray = SortUtil.sortArrayByKeys([...newMessages, ...messages], ['createdDt', 'isSender'], ['asc', 'desc'])
+      console.log("> ", sortedWholeArray);
+      setMessages(sortedWholeArray); // Prepend new messages
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -99,7 +122,7 @@ const HomePage = () => {
             {
               messages.length > 0 && (
                 <>
-                  <ChatBackdrop>
+                  <ChatBackdrop ref={backdropRef} onScroll={handleScroll}>
                     {
                       SortUtil.sortArrayByKeys(messages, ['createdDt', 'isSender'], ['asc', 'asc'])
                         .map((msg, index) => {

@@ -79,10 +79,10 @@ export default function LoginPage() {
             />
             <SquareSpacing spacing={SpacingSize.Large} />
             <StyledButton
-              primary
+              $primary
+              $fullWidth
               id="btn-login"
               type="submit"
-              fullWidth
             >
               {copywriting?.labels.button}
             </StyledButton>
