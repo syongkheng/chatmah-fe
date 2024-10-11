@@ -56,8 +56,8 @@ export default function ModalComponent({
             ? (
               <HorizontalCenter>
                 <StyledButton
-                  secondary
-                  fullWidth
+                  $secondary
+                  $fullWidth
                   onClick={handleCloseButton}
                 >
                   {cancelButtonLabel}
@@ -70,17 +70,17 @@ export default function ModalComponent({
               <FlexDirectionRow>
                 <SpaceBetween>
                   <StyledButton
-                    secondary
+                    $secondary
+                    $fullWidth
                     onClick={handleCloseButton}
-                    fullWidth
                   >
                     {cancelButtonLabel}
                   </StyledButton>
                   <SquareSpacing spacing={SpacingSize.Medium} />
                   <StyledButton
-                    primary
+                    $primary
+                    $fullWidth
                     onClick={onSuccessHandler}
-                    fullWidth
                   >
                     {successButtonLabel}
                   </StyledButton>

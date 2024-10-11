@@ -137,10 +137,10 @@ export default function RegisterPage() {
               />
               <SquareSpacing spacing={SpacingSize.Large} />
               <StyledButton
-                primary
+                $primary
                 id="btn-register"
                 type="submit"
-                fullWidth
+                $fullWidth
               >
                 {copywriting?.labels.button}
               </StyledButton>

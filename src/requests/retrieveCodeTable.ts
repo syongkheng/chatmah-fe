@@ -8,7 +8,7 @@ import { ICodeTable } from "../models/ICodeTable";
  */
 export const retrieveCodeTable = async (codeCategory: string): Promise<ICodeTable[]> => {
   try {
-    const response = await axiosInstance.get("/api/ct/" + codeCategory);
+    const response = await axiosInstance.get("/ct/" + codeCategory);
     return response['data']['data'] as ICodeTable[];
   } catch (err: any) {
     throw new Error(`Unexpected error: ${err}`);

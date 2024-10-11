@@ -7,7 +7,7 @@ import { SpacingSize } from "../components/spacing/SquareSpacing.enum";
 import { FlexDirectionColumn, FlexDirectionRow, FullWidthBox, HorizontalCenter, VerticalCenter } from '../components/styled/alignment/AlignmentComponents';
 import { ChatBackdrop, InteractionBackdrop } from '../components/styled/backdrops/BackdropComponents';
 import { StyledPage } from '../components/styled/pages/StyledPage';
-import { StyledPromptTypography } from '../components/styled/typography/Typography';
+import { StyledPromptTypography, StyledText } from '../components/styled/typography/Typography';
 import CodeTableConstants from '../constants/CodeTableConstants';
 import CopywritingConstants from '../constants/PageConstants';
 import { defaultHomePageCopywriting, IHomePageCopywriting } from '../copywriting/interfaces/IHomePage';
@@ -21,12 +21,14 @@ import { retrieveMessages } from '../requests/retrieveMessages';
 import { submitPrompt } from '../requests/submitPrompt';
 import { AppStorageUtil } from "../utils/AppStorageUtil";
 import { SortUtil } from '../utils/SortUtil';
+import { AppConstants } from "../constants/AppConstants";
 
 interface IHomePageCodeTableResult {
   ddl_translation: ICodeTable[],
 }
 
 const HomePage = () => {
+  const RETRIEVE_MESSAGE_OFFSET = AppConstants.getOffset();
   const [locale, setLocale] = React.useState<string>(AppStorageUtil.getLocal(StorageKeys.Locale) ?? Locale.en);
   const [messages, setMessages] = React.useState<IConversationMessage[]>([]);
   const [payload, setPayload] = React.useState<IMessagePayload>(defaultMessagePayload);
@@ -35,6 +37,10 @@ const HomePage = () => {
   const [codeTableResult, setCodeTableResult] = React.useState<IHomePageCodeTableResult>({
     ddl_translation: [],
   })
+  const backdropRef = React.useRef<HTMLDivElement>(null);
+  const [offset, setOffset] = React.useState<number>(RETRIEVE_MESSAGE_OFFSET);
+  const [isLastPage, setIsLastPage] = React.useState<boolean>(false);
+
 
   React.useEffect(() => {
     useCopywritingFromFile<IHomePageCopywriting>(locale, CopywritingConstants.PAGES.HOME).then(setCopywriting);
@@ -67,9 +73,28 @@ const HomePage = () => {
     await submitPrompt(_payload);
     setPayload({ message: '' })
     const messages = await retrieveMessages();
-    setMessages(messages);
+    setMessages(messages?.contents);
+    if (backdropRef.current && messages?.contents?.length === RETRIEVE_MESSAGE_OFFSET) {
+      backdropRef.current.scrollTop = backdropRef.current.scrollHeight;
+    }
     await retrieveMessages();
     setIsLoading(false);
+  };
+
+  const handleScroll = async () => {
+    if (backdropRef.current && backdropRef.current.scrollTop === 0 && !isLoading) {
+      setIsLoading(true);
+
+      if (!isLastPage) {
+        setOffset((prevOffset) => prevOffset + RETRIEVE_MESSAGE_OFFSET); // Increment the offset
+        const response = await retrieveMessages(offset);
+        const newMessages = response.contents;
+        const sortedWholeArray = SortUtil.sortArrayByKeys([...newMessages, ...messages], ['createdDt', 'isSender'], ['asc', 'desc'])
+        setMessages(sortedWholeArray); // Prepend new messages
+        setIsLastPage(response.isLast);
+      }
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -79,7 +104,7 @@ const HomePage = () => {
         <InteractionBackdrop>
           <FlexDirectionColumn $fullHeight>
             {
-              messages.length === 0 && (
+              messages?.length === 0 && (
                 <VerticalCenter>
                   <HorizontalCenter>
                     <FlexDirectionColumn>
@@ -97,11 +122,21 @@ const HomePage = () => {
               )
             }
             {
-              messages.length > 0 && (
+              messages?.length > 0 && (
                 <>
-                  <ChatBackdrop>
+                  <ChatBackdrop ref={backdropRef} onScroll={handleScroll}>
                     {
-                      SortUtil.sortArrayByKeys(messages, ['createdDt', 'isSender'], ['asc', 'asc'])
+                      isLastPage && (
+                        <HorizontalCenter>
+                          <StyledText $fontSize="12px" color="#EFEFEF">
+
+                          No more Messages...
+                          </StyledText>
+                        </HorizontalCenter>
+                      )
+                    }
+                    {
+                      SortUtil.sortArrayByKeys(messages, ['createdDt', 'isSender'], ['asc', 'desc'])
                         .map((msg, index) => {
                           return (
                             <React.Fragment key={index}>

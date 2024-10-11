@@ -28,38 +28,38 @@ export class SortUtil {
   }
 
   /**
- * Sorts an array of objects by specified keys in either ascending or descending order.
- *
- * @param array - The array to sort.
- * @param keys - An array of keys to sort by.
- * @param order - The order to sort ('asc' or 'desc') for each key.
- * @returns The sorted array.
- */
-static sortArrayByKeys<T>(
+  * Sorts an array of objects by specified keys in either ascending or descending order.
+  *
+  * @param array - The array to sort.
+  * @param keys - An array of keys to sort by.
+  * @param order - The order to sort ('asc' or 'desc') for each key.
+  * @returns The sorted array.
+  */
+  static sortArrayByKeys<T>(
     array: T[],
     keys: (keyof T)[],
     order: ('asc' | 'desc')[]
   ): T[] {
-  // Validate order array length
-  if (keys.length !== order.length) {
-    throw new Error("The number of keys must match the number of order specifications.");
-  }
-
-  return array.sort((a, b) => {
-    for (let i = 0; i < keys.length; i++) {
-      const key = keys[i];
-      const valueA = a[key];
-      const valueB = b[key];
-
-      if (valueA < valueB) {
-        return order[i] === 'asc' ? -1 : 1;
-      }
-      if (valueA > valueB) {
-        return order[i] === 'asc' ? 1 : -1;
-      }
-      // If values are equal, continue to the next key
+    // Validate order array length
+    if (keys.length !== order.length) {
+      throw new Error("The number of keys must match the number of order specifications.");
     }
-    return 0; // All keys are equal
-  });
-}
+
+    return array.sort((a, b) => {
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        const valueA = a[key];
+        const valueB = b[key];
+
+        if (valueA < valueB) {
+          return order[i] === 'asc' ? -1 : 1;
+        }
+        if (valueA > valueB) {
+          return order[i] === 'asc' ? 1 : -1;
+        }
+        // If values are equal, continue to the next key
+      }
+      return 0; // All keys are equal 
+    });
+  }
 }

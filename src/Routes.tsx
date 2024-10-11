@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Root from "./root";
 import * as Page from "./pages";
 import RouteConstants from "./constants/RouteConstants";
+import withAuthentication from "./hocs/withAuthentication";
+import React from "react";
 
 export const Router = createBrowserRouter([
   {
@@ -15,15 +17,15 @@ export const Router = createBrowserRouter([
       },
       {
         path: RouteConstants.LOGIN,
-        element: <Page.Login />
+        element: <Page.Login />,
       },
       {
         path: RouteConstants.REGISTER,
-        element: <Page.Register />
+        element: <Page.Register />,
       },
       {
         path: RouteConstants.HOME,
-        element: <Page.Home />
+        element: React.createElement(withAuthentication(Page.Home)),
       }
     ],
   },

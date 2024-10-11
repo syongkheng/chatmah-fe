@@ -56,10 +56,10 @@ export default function LandingPage() {
           <HorizontalCenter>
             <FixedWidthBox width='30svh'>
               <StyledButton
-                secondary
+                $secondary
                 id="btn_mock_send"
                 onClick={() => navigate.goLogin()}
-                fullWidth
+                $fullWidth
               >
                 {copywriting.buttonLabel}
               </StyledButton>

@@ -9,7 +9,7 @@ import { AppStorageUtil } from "../utils/AppStorageUtil";
  */
 export const login = async (loginForm: ILoginForm): Promise<boolean> => {
   try {
-    const res = await axiosInstance.post(`/api/auth/login`, loginForm);
+    const res = await axiosInstance.post(`/auth/login`, loginForm);
     if (!(res.data.code === 200)) {
       return false;
     }

@@ -1,10 +1,10 @@
 // Button.js
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  primary?: boolean;
-  secondary?: boolean;
-  fullWidth?: boolean;
+  $primary?: boolean;
+  $secondary?: boolean;
+  $fullWidth?: boolean;
 }
 
 
@@ -16,9 +16,9 @@ const StyledButton = styled.button<ButtonProps>`
   transition: all 0.3s ease;
   cursor: pointer;
 
-  ${({ fullWidth }) => fullWidth ? 'width: 100%;' : null}
+  ${({ $fullWidth }) => $fullWidth ? 'width: 100%;' : null}
 
-  ${(props) => props.primary && css`
+  ${({ $secondary }) => $secondary ? `
     background-color: #333333;
     color: #efefef;
     border: 1px solid #4a4a4a;
@@ -28,19 +28,18 @@ const StyledButton = styled.button<ButtonProps>`
       border-color: #5a5a5a;
       color: #d0d0d0;
     }
-  `}
+  ` : null}
 
-  ${(props) => props.secondary && css`
-    background-color: transparent;
-    color: #b0b0b0;
+  ${({ $primary }) => $primary ? `
+    background-color: #333333;
+    color: #efefef;
     border: 1px solid #4a4a4a;
     
     &:hover {
-      background-color: rgba(255, 255, 255, 0.05);
+      background-color: #000000;
       border-color: #5a5a5a;
       color: #d0d0d0;
-    }
-  `}
+    }` : null}
 `;
 
 export default StyledButton;

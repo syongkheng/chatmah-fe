@@ -15,8 +15,14 @@ export const Hyperlink = styled.a`
   cursor: pointer;
 `;
 
-export const StyledText = styled.span`
-  font-size: 14px;
+interface IStyledText {
+  $fontSize?: string;
+  color?: string;
+}
+
+export const StyledText = styled.span<IStyledText>`
+  font-size: ${({ $fontSize }) => $fontSize ? $fontSize : '14px;'};
+  color: ${({color}) => color ? color : '#333333'};
 `;
 
 export const StyledPromptTypography = styled.span`

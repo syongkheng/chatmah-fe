@@ -8,7 +8,7 @@ import { ITranslateMessagePayload } from "../models/ITranslateMessagePayload";
  */
 export const translateContent = async (payload: ITranslateMessagePayload): Promise<string> => {
   try {
-    const result = await axiosInstance.post(`${import.meta.env.VITE_APP_URL}/api/v1/gpt/translate`, { payload });
+    const result = await axiosInstance.post(`${import.meta.env.VITE_APP_URL}/v1/gpt/translate`, { payload });
     return result['data']['data'] as string;
   } catch (err: any) {
     throw new Error(`Unexpected error: ${err}`);

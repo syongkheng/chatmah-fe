@@ -100,10 +100,10 @@ export default function BottomDrawer({
               <Divider />
               <SquareSpacing spacing={SpacingSize.Large} />
               <StyledButton
-                primary
+                $primary
+                $fullWidth
                 id="auth-button"
                 onClick={isAuthenticated ? handleLogout : handleLogin}
-                fullWidth
               >
                 {isAuthenticated ? getLogoutLabel() : getLoginLabel()}
               </StyledButton>
