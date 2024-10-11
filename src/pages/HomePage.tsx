@@ -7,7 +7,7 @@ import { SpacingSize } from "../components/spacing/SquareSpacing.enum";
 import { FlexDirectionColumn, FlexDirectionRow, FullWidthBox, HorizontalCenter, VerticalCenter } from '../components/styled/alignment/AlignmentComponents';
 import { ChatBackdrop, InteractionBackdrop } from '../components/styled/backdrops/BackdropComponents';
 import { StyledPage } from '../components/styled/pages/StyledPage';
-import { StyledPromptTypography } from '../components/styled/typography/Typography';
+import { StyledPromptTypography, StyledText } from '../components/styled/typography/Typography';
 import CodeTableConstants from '../constants/CodeTableConstants';
 import CopywritingConstants from '../constants/PageConstants';
 import { defaultHomePageCopywriting, IHomePageCopywriting } from '../copywriting/interfaces/IHomePage';
@@ -84,9 +84,7 @@ const HomePage = () => {
   const handleScroll = async () => {
     if (backdropRef.current && backdropRef.current.scrollTop === 0 && !isLoading) {
       setIsLoading(true);
-      console.log("Offset: ", offset);
 
-      
       if (!isLastPage) {
         setOffset((prevOffset) => prevOffset + RETRIEVE_MESSAGE_OFFSET); // Increment the offset
         const response = await retrieveMessages(offset);
@@ -127,6 +125,16 @@ const HomePage = () => {
               messages?.length > 0 && (
                 <>
                   <ChatBackdrop ref={backdropRef} onScroll={handleScroll}>
+                    {
+                      isLastPage && (
+                        <HorizontalCenter>
+                          <StyledText $fontSize="12px" color="#EFEFEF">
+
+                          No more Messages...
+                          </StyledText>
+                        </HorizontalCenter>
+                      )
+                    }
                     {
                       SortUtil.sortArrayByKeys(messages, ['createdDt', 'isSender'], ['asc', 'desc'])
                         .map((msg, index) => {

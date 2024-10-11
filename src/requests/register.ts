@@ -9,7 +9,7 @@ import { IRegisterForm } from "../models/IRegisterForm";
  */
 export const register = async (registerForm: IRegisterForm): Promise<number> => {
   try {
-    await axiosInstance.post(`/api/auth/register`, registerForm);
+    await axiosInstance.post(`/auth/register`, registerForm);
     return 200; // Return 200 if the request is successful
   } catch (err: any) {
     const customStatusCode: number = err.response?.data?.code ?? 500; // Default to 500 if code is not available

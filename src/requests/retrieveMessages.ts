@@ -10,7 +10,7 @@ import { Page } from "../models/Page";
  */
 export const retrieveMessages = async (offset: number = 0): Promise<Page<IConversationMessage>> => {
   try {
-    const response = await axiosInstance.get(`/api/messages`, {
+    const response = await axiosInstance.get(`/messages`, {
       params: { offset }
     });
     return response['data']['data'] as Page<IConversationMessage>;

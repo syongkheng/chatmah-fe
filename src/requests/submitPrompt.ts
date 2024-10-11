@@ -8,7 +8,7 @@ import { IMessagePayload } from "../models/IMessagePayload";
  */
 export const submitPrompt = async (payload: IMessagePayload): Promise<void> => {
   try {
-    await axiosInstance.post(`${import.meta.env.VITE_APP_URL}/api/v1/gpt`, { payload })
+    await axiosInstance.post(`${import.meta.env.VITE_APP_URL}/v1/gpt`, { payload })
     return;
   } catch (err: any) {
     throw new Error(`Unexpected error: ${err}`);
