@@ -4,6 +4,7 @@ import { IHomePageCopywriting } from '../interfaces/IHomePage';
 export default function copywritingEn() {
   const banner = {
     primary: '在想什么呢?',
+    noMoreMessages: '没有消息了...',
   };
 
   const inputLabel = {

@@ -129,8 +129,7 @@ const HomePage = () => {
                       isLastPage && (
                         <HorizontalCenter>
                           <StyledText $fontSize="12px" color="#EFEFEF">
-
-                          No more Messages...
+                            {copywriting?.banner?.noMoreMessages}
                           </StyledText>
                         </HorizontalCenter>
                       )

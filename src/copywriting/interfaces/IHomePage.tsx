@@ -9,6 +9,7 @@ export interface IHomePageCopywriting {
 export const defaultHomePageCopywriting: IHomePageCopywriting = {
   banner: {
     primary: '',
+    noMoreMessages: '',
   },
   prompt: [],
   inputLabel: {
@@ -18,6 +19,7 @@ export const defaultHomePageCopywriting: IHomePageCopywriting = {
 
 export interface IHomePageBanner {
   primary: string;
+  noMoreMessages: string;
 }
 
 export interface IHomePagePrompt {
