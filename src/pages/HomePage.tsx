@@ -39,6 +39,7 @@ const HomePage = () => {
   })
   const backdropRef = React.useRef<HTMLDivElement>(null);
   const [offset, setOffset] = React.useState<number>(RETRIEVE_MESSAGE_OFFSET);
+  const [isLastPage, setIsLastPage] = React.useState<boolean>(false);
 
 
   React.useEffect(() => {
@@ -72,9 +73,8 @@ const HomePage = () => {
     await submitPrompt(_payload);
     setPayload({ message: '' })
     const messages = await retrieveMessages();
-    setMessages(messages);
-    if (backdropRef.current && messages.length === RETRIEVE_MESSAGE_OFFSET) {
-      console.log("Should scroll");
+    setMessages(messages?.contents);
+    if (backdropRef.current && messages?.contents?.length === RETRIEVE_MESSAGE_OFFSET) {
       backdropRef.current.scrollTop = backdropRef.current.scrollHeight;
     }
     await retrieveMessages();
@@ -84,13 +84,17 @@ const HomePage = () => {
   const handleScroll = async () => {
     if (backdropRef.current && backdropRef.current.scrollTop === 0 && !isLoading) {
       setIsLoading(true);
-      setOffset((prevOffset) => prevOffset + RETRIEVE_MESSAGE_OFFSET); // Increment the offset
-      const newMessages = await retrieveMessages(offset);
+      console.log("Offset: ", offset);
 
-
-      const sortedWholeArray = SortUtil.sortArrayByKeys([...newMessages, ...messages], ['createdDt', 'isSender'], ['asc', 'desc'])
-      console.log("> ", sortedWholeArray);
-      setMessages(sortedWholeArray); // Prepend new messages
+      
+      if (!isLastPage) {
+        setOffset((prevOffset) => prevOffset + RETRIEVE_MESSAGE_OFFSET); // Increment the offset
+        const response = await retrieveMessages(offset);
+        const newMessages = response.contents;
+        const sortedWholeArray = SortUtil.sortArrayByKeys([...newMessages, ...messages], ['createdDt', 'isSender'], ['asc', 'desc'])
+        setMessages(sortedWholeArray); // Prepend new messages
+        setIsLastPage(response.isLast);
+      }
       setIsLoading(false);
     }
   };
@@ -102,7 +106,7 @@ const HomePage = () => {
         <InteractionBackdrop>
           <FlexDirectionColumn $fullHeight>
             {
-              messages.length === 0 && (
+              messages?.length === 0 && (
                 <VerticalCenter>
                   <HorizontalCenter>
                     <FlexDirectionColumn>
@@ -120,11 +124,11 @@ const HomePage = () => {
               )
             }
             {
-              messages.length > 0 && (
+              messages?.length > 0 && (
                 <>
                   <ChatBackdrop ref={backdropRef} onScroll={handleScroll}>
                     {
-                      SortUtil.sortArrayByKeys(messages, ['createdDt', 'isSender'], ['asc', 'asc'])
+                      SortUtil.sortArrayByKeys(messages, ['createdDt', 'isSender'], ['asc', 'desc'])
                         .map((msg, index) => {
                           return (
                             <React.Fragment key={index}>
