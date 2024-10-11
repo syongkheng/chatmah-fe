@@ -16,7 +16,7 @@ export class RegistrationUtil {
   static async validateForm (form: IRegisterForm, locale: Locale): Promise<string[]> {
     return new Promise<string[]>(async (resolve, _) => {
       const errorList: string[] = [];
-      await import(`../copywriting/${locale}/RegisterValidation.ts`).then((module) => {
+      await import(`../copywriting/${locale}/RegisterValidation.tsx`).then((module) => {
         const {
           username,
           password,
