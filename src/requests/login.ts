@@ -7,19 +7,19 @@ import { AppStorageUtil } from "../utils/AppStorageUtil";
  * Make a call to authenticate user
  * @param loginForm
  */
-export const login = async (loginForm: ILoginForm): Promise<boolean> => {
+export const login = async (loginForm: ILoginForm): Promise<string | undefined> => {
   try {
     const res = await axiosInstance.post(`/auth/login`, loginForm);
     if (!(res.data.code === 200)) {
-      return false;
+      return undefined;
     }
     const jwt = res.data.data;
     AppStorageUtil.setSession(StorageKeys.Jwt, jwt);
-    return true;
+    return jwt;
 
 
   } catch (err) {
     console.log("Catch: ", JSON.stringify(err));
-    return false; // Optionally rethrow the error to handle it in the calling function
+    return undefined; // Optionally rethrow the error to handle it in the calling function
   }
 };

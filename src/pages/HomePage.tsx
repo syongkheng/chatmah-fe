@@ -17,6 +17,7 @@ import { retrieveMessages } from '../requests/retrieveMessages';
 import { submitPrompt } from '../requests/submitPrompt';
 import { AppConstants } from "../constants/AppConstants";
 import { useLocale } from "../contexts/LocaleContext";
+import LoadingComponent from "../components/loader/LoadingComponent";
 
 const LazyGptPromptTextInput = React.lazy(() => import('../components/inputs/GptPromptTextInput'));
 const LazyMessageCard = React.lazy(() => import("../components/message/MessageCard"));
@@ -104,66 +105,68 @@ const HomePage = () => {
 
   return (
     <>
-      <StyledPage $horizontalCenter $verticalCenter>
-        <InteractionBackdrop>
-          <FlexDirectionColumn $fullHeight>
-            {messages?.length === 0 && (
-              <VerticalCenter>
-                <HorizontalCenter>
-                  <FlexDirectionColumn>
-                    <StyledPromptTypography>
-                      {copywriting.banner.primary}
-                    </StyledPromptTypography>
-                    <LazyGptPromptTextInput
-                      handleTextChange={handleTextChange}
-                      handleSendRequest={handleSendRequest}
-                      isLoading={isLoading}
-                      placeholderText={copywriting.inputLabel.prompt}
-                      payload={payload}
-                    />
-                  </FlexDirectionColumn>
-                </HorizontalCenter>
-              </VerticalCenter>
-            )}
-            {messages?.length > 0 && (
-              <>
-                <ChatBackdrop ref={backdropRef} onScroll={handleScroll}>
-                  {isLastPage && (
-                    <HorizontalCenter>
-                      <StyledText $fontSize="12px" color="#EFEFEF">
-                        {copywriting?.banner?.noMoreMessages}
-                      </StyledText>
-                    </HorizontalCenter>
-                  )}
-                  {messages
-                    .map((msg, index) => (
-                      <React.Fragment key={index}>
-                        <LazyMessageCard
-                          createdDt={msg.createdDt}
-                          content={msg.content}
-                          isSender={msg.isSender}
-                          translationCodeTable={codeTableResult?.ddl_translation}
-                        />
-                      </React.Fragment>
-                    ))}
-                </ChatBackdrop>
-                <FullWidthBox>
-                  <FlexDirectionRow>
-                    <LazyGptPromptTextInput
-                      handleTextChange={handleTextChange}
-                      handleSendRequest={handleSendRequest}
-                      isLoading={isLoading}
-                      placeholderText={copywriting.inputLabel.prompt}
-                      payload={payload}
-                    />
-                  </FlexDirectionRow>
-                </FullWidthBox>
-              </>
-            )}
-          </FlexDirectionColumn>
-        </InteractionBackdrop>
-        <SquareSpacing spacing={SpacingSize.Small} />
-      </StyledPage>
+      <React.Suspense fallback={<LoadingComponent show />}>
+        <StyledPage $horizontalCenter $verticalCenter>
+          <InteractionBackdrop>
+            <FlexDirectionColumn $fullHeight>
+              {messages?.length === 0 && (
+                <VerticalCenter>
+                  <HorizontalCenter>
+                    <FlexDirectionColumn>
+                      <StyledPromptTypography>
+                        {copywriting.banner.primary}
+                      </StyledPromptTypography>
+                      <LazyGptPromptTextInput
+                        handleTextChange={handleTextChange}
+                        handleSendRequest={handleSendRequest}
+                        isLoading={isLoading}
+                        placeholderText={copywriting.inputLabel.prompt}
+                        payload={payload}
+                      />
+                    </FlexDirectionColumn>
+                  </HorizontalCenter>
+                </VerticalCenter>
+              )}
+              {messages?.length > 0 && (
+                <>
+                  <ChatBackdrop ref={backdropRef} onScroll={handleScroll}>
+                    {isLastPage && (
+                      <HorizontalCenter>
+                        <StyledText $fontSize="12px" color="#EFEFEF">
+                          {copywriting?.banner?.noMoreMessages}
+                        </StyledText>
+                      </HorizontalCenter>
+                    )}
+                    {messages
+                      .map((msg, index) => (
+                        <React.Fragment key={index}>
+                          <LazyMessageCard
+                            createdDt={msg.createdDt}
+                            content={msg.content}
+                            isSender={msg.isSender}
+                            translationCodeTable={codeTableResult?.ddl_translation}
+                          />
+                        </React.Fragment>
+                      ))}
+                  </ChatBackdrop>
+                  <FullWidthBox>
+                    <FlexDirectionRow>
+                      <LazyGptPromptTextInput
+                        handleTextChange={handleTextChange}
+                        handleSendRequest={handleSendRequest}
+                        isLoading={isLoading}
+                        placeholderText={copywriting.inputLabel.prompt}
+                        payload={payload}
+                      />
+                    </FlexDirectionRow>
+                  </FullWidthBox>
+                </>
+              )}
+            </FlexDirectionColumn>
+          </InteractionBackdrop>
+          <SquareSpacing spacing={SpacingSize.Small} />
+        </StyledPage>
+      </React.Suspense>
     </>
   );
 };

@@ -16,11 +16,13 @@ import { HorizontalCenter } from "../components/styled/alignment/AlignmentCompon
 import { Hyperlink } from "../components/styled/typography/Typography";
 import StyledButton from "../components/styled/buttons/ButtonComponents";
 import { useLocale } from "../contexts/LocaleContext";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginPage() {
 
   const navigate = useNavigation();
   const { locale } = useLocale();
+  const { authContextLogin } = useAuth();
   const [copywriting, setCopywriting] = React.useState<ILoginPageCopywriting>(defaultLoginPageCopywriting);
   const [loginError, setLoginError] = React.useState<string>('');
 
@@ -41,7 +43,8 @@ export default function LoginPage() {
     event.preventDefault();
 
     const loginSuccess = await login(loginForm);
-    if (loginSuccess) {
+    if (!!loginSuccess) {
+      authContextLogin(loginSuccess);
       navigate.goHome();
     } else {
       setLoginError(copywriting.response.invalidCredentials)

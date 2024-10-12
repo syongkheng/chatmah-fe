@@ -25,6 +25,10 @@ export default function LandingPage() {
     useCopywritingFromFile<ILandingPageCopywriting>(locale, 'LandingPage').then(setCopywriting);
   }, [locale]);
 
+  const handleCta = () => {
+    navigate.goHome();
+  }
+
   return (
     <>
       <React.Suspense fallback={<LoadingComponent show />}>
@@ -60,7 +64,7 @@ export default function LandingPage() {
                 <StyledButton
                   $secondary
                   id="btn_mock_send"
-                  onClick={() => navigate.goLogin()}
+                  onClick={() => handleCta()}
                   $fullWidth
                 >
                   {copywriting.buttonLabel}
