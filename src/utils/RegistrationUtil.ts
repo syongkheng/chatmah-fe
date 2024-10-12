@@ -4,7 +4,7 @@ import { IRegisterForm } from "../models/IRegisterForm";
 /**
  * Utility functions for Registration Flow
  */
-export class RegistrationUtil {
+export default class RegistrationUtil {
 
   /**
    * Validates the registration form to ensure all input is valid.

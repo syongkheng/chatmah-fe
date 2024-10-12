@@ -1,11 +1,12 @@
 import { ChangeEvent } from "react";
 import { StyledTextField } from "../styled/inputs/InputComponents";
-import { InputAdornment } from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
 import { Clickable } from "../styled/ClickableComponents";
-import LoadingComponent from "../loader/LoadingComponent";
+import LoopIcon from '@mui/icons-material/Loop';
 import { VerticalCenter } from "../styled/alignment/AlignmentComponents";
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import { IMessagePayload } from "../../models/IMessagePayload";
+import { RotatingDiv } from "../styled/animations/LoadingComponents";
 
 interface IGptPromptTextInput {
   handleTextChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -22,6 +23,7 @@ export default function GptPromptTextInput({
   placeholderText,
   payload
 }: IGptPromptTextInput) {
+
   return (
     <StyledTextField
       id="message"
@@ -35,7 +37,9 @@ export default function GptPromptTextInput({
             {
               isLoading
                 ?
-                <LoadingComponent show={isLoading} />
+                <RotatingDiv disabled={isLoading}>
+                  <LoopIcon />
+                </RotatingDiv>
                 :
                 <Clickable onClick={() => handleSendRequest()}>
                   <VerticalCenter>

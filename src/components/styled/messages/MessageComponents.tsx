@@ -6,7 +6,7 @@ interface IStyledMessageCard {
 
 const StyledMessageCard = styled.div<IStyledMessageCard>`
   font-size: 12px;
-  max-width: 275px;
+  max-width: 80%;
   border-radius: 0.5rem;
   padding: 0.4rem;
   margin: 0.1rem;

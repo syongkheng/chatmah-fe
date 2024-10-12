@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "webpack": "webpack"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -30,12 +31,18 @@
     "styled-components": "^6.1.13"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.25.7",
+    "@babel/preset-typescript": "^7.25.7",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
+    "babel-loader": "^9.2.1",
     "dotenv-webpack": "^8.1.0",
-    "typescript": "^5.2.2",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.3",
     "vite": "^5.2.0",
-    "webpack": "^5.91.0"
+    "webpack": "^5.95.0",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-cli": "^5.1.4"
   }
 }

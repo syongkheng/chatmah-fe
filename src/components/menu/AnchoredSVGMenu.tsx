@@ -1,4 +1,5 @@
-import { Menu, MenuItem } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { ICodeTable } from '../../models/ICodeTable';
 import { Dispatch } from 'react';
 

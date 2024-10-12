@@ -3,17 +3,17 @@ import BrandingLogo from '../../assets/logo/brand-bg-text.png';
 import { Locale, StorageKeys } from '../../enums';
 import useNavigation from '../../hooks/useNavigation';
 import { AppStorageUtil } from '../../utils/AppStorageUtil';
-import BottomDrawer from '../drawer/BottomDrawerComponent';
 import { Clickable } from '../styled/ClickableComponents';
 import { StyledHeader } from '../styled/header/HeaderComponents';
+import LoadingComponent from '../loader/LoadingComponent';
+import { useLocale } from '../../contexts/LocaleContext';
+const LazyBottomDrawer = React.lazy(() => import("../drawer/BottomDrawerComponent"));
 
-interface HeaderProps {
-  setLocale: React.Dispatch<React.SetStateAction<string>>;
-}
-
-const Header: React.FC<HeaderProps> = ({ setLocale }) => {
+const Header: React.FC = () => {
   const navigate = useNavigation();
   const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(false);
+  const { setLocale } = useLocale();
+
 
   React.useEffect(() => {
     const storedLocale = AppStorageUtil.getLocal(StorageKeys.Locale) ?? Locale.en;
@@ -33,11 +33,13 @@ const Header: React.FC<HeaderProps> = ({ setLocale }) => {
         </Clickable>
         <Clickable>
           <StyledHeader.Menu>
-            <BottomDrawer
-              setLocale={setLocale}
-              isAuthenticated={isAuthenticated}
-              setIsAuthenticated={setIsAuthenticated}
-            />
+            <React.Suspense fallback={<LoadingComponent show />}>
+              <LazyBottomDrawer
+                setLocale={setLocale}
+                isAuthenticated={isAuthenticated}
+                setIsAuthenticated={setIsAuthenticated}
+              />
+            </React.Suspense>
           </StyledHeader.Menu>
         </Clickable>
       </StyledHeader.Content>

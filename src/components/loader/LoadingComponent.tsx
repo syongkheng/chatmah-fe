@@ -1,5 +1,5 @@
 import '../../css/components/LoadingComponent.css';
-import { Modal } from '@mui/material';
+import Modal from '@mui/material/Modal';
 
 interface ILoadingComponent {
   show: boolean;

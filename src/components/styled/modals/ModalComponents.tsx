@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Modal } from "@mui/material";
+import Modal from "@mui/material/Modal";
 
 export const StyledModal = styled.div`
   display: flex;

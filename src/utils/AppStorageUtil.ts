@@ -3,8 +3,6 @@
  */
 export class AppStorageUtil {
 
-
-
   /**
    * Stores a value in Session Storage
    * @param key - List of keys from StorageKeys

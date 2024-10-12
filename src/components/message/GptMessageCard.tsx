@@ -1,6 +1,5 @@
 import LanguageIcon from '@mui/icons-material/Language';
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 import Branding from '../../assets/logo/logo-with-bg.png';
 import { ICodeTable } from '../../models/ICodeTable';
 import { IConversationMessage } from '../../models/IConversationMessage';
@@ -8,10 +7,12 @@ import { ITranslateMessagePayload } from '../../models/ITranslateMessagePayload'
 import { translateContent } from '../../requests/translateContent';
 import { DateUtil } from '../../utils/DateUtil';
 import { StringUtil } from '../../utils/StringUtil';
-import AnchoredSVGMenu from '../menu/AnchoredSVGMenu';
 import { FlexDirectionColumn, FlexDirectionRow } from '../styled/alignment/AlignmentComponents';
 import { StyledMessageCard } from '../styled/messages/MessageComponents';
+import LoadingComponent from '../loader/LoadingComponent';
 
+const LazyAnchoredSVGMenu = React.lazy(() => import('../menu/AnchoredSVGMenu'));
+const LazyReactMarkDown = React.lazy(() => import('react-markdown'));
 
 export default function GptMessageCard({
   content,
@@ -40,16 +41,16 @@ export default function GptMessageCard({
           <StyledMessageCard.BrandingIcon src={Branding} alt='ChatMah' />
           <FlexDirectionColumn>
             <StyledMessageCard.ContentBackdrop>
-              <ReactMarkdown>
+              <LazyReactMarkDown>
                 {content}
-              </ReactMarkdown>
+              </LazyReactMarkDown>
               {
                 !StringUtil.isStringEmpty(translatedContent) &&
                 <>
                   <hr />
-                  <ReactMarkdown>
+                  <LazyReactMarkDown>
                     {translatedContent}
-                  </ReactMarkdown>
+                  </LazyReactMarkDown>
                 </>
               }
             </StyledMessageCard.ContentBackdrop>
@@ -67,14 +68,16 @@ export default function GptMessageCard({
           </FlexDirectionColumn>
         </StyledMessageCard>
       </FlexDirectionRow>
-      <AnchoredSVGMenu
-        isOpen={open}
-        svgAnchorEl={anchorEl}
-        options={translationCodeTable as ICodeTable[]}
-        handleClose={handleClose}
-        setAnchorEl={setAnchorEl}
-        _content={content}
-      />
+      <React.Suspense fallback={<LoadingComponent show />}>
+        <LazyAnchoredSVGMenu
+          isOpen={open}
+          svgAnchorEl={anchorEl}
+          options={translationCodeTable as ICodeTable[]}
+          handleClose={handleClose}
+          setAnchorEl={setAnchorEl}
+          _content={content}
+        />
+      </React.Suspense>
     </>
   )
 }

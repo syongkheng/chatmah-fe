@@ -6,9 +6,11 @@ import { ITranslateMessagePayload } from '../../models/ITranslateMessagePayload'
 import { translateContent } from '../../requests/translateContent';
 import { DateUtil } from '../../utils/DateUtil';
 import { StringUtil } from '../../utils/StringUtil';
-import AnchoredSVGMenu from '../menu/AnchoredSVGMenu';
 import { FlexDirectionColumn, FlexDirectionRow } from '../styled/alignment/AlignmentComponents';
 import { StyledMessageCard } from '../styled/messages/MessageComponents';
+import LoadingComponent from '../loader/LoadingComponent';
+
+const LazyAnchoredSVGMenu = React.lazy(() => import('../menu/AnchoredSVGMenu'));
 
 export default function UserMessageCard({
   content,
@@ -68,14 +70,16 @@ export default function UserMessageCard({
           </FlexDirectionColumn>
         </StyledMessageCard>
       </FlexDirectionRow>
-      <AnchoredSVGMenu
-        isOpen={open}
-        svgAnchorEl={anchorEl}
-        options={translationCodeTable as ICodeTable[]}
-        handleClose={handleClose}
-        setAnchorEl={setAnchorEl}
-        _content={content}
-      />
+      <React.Suspense fallback={<LoadingComponent show />}>
+        <LazyAnchoredSVGMenu
+          isOpen={open}
+          svgAnchorEl={anchorEl}
+          options={translationCodeTable as ICodeTable[]}
+          handleClose={handleClose}
+          setAnchorEl={setAnchorEl}
+          _content={content}
+        />
+      </React.Suspense>
     </>
   )
 }

@@ -1,7 +1,9 @@
 import React from 'react';
 import { IConversationMessage } from "../../models/IConversationMessage";
-import GptMessageCard from './GptMessageCard';
-import UserMessageCard from './UserMessageCard';
+import LoadingComponent from '../loader/LoadingComponent';
+
+const LazyGptMessageCard = React.lazy(() => import('./GptMessageCard'));
+const LazyUserMessageCard = React.lazy(() => import('./UserMessageCard'));
 
 export default function MessageCard({
   content,
@@ -12,21 +14,23 @@ export default function MessageCard({
 
   return (
     <React.Fragment key={createdDt + content}>
-      {
-        isSender
-          ?
-          <UserMessageCard
-            content={content}
-            createdDt={createdDt}
-            translationCodeTable={translationCodeTable}
-          />
-          :
-          <GptMessageCard
-            content={content}
-            createdDt={createdDt}
-            translationCodeTable={translationCodeTable}
-          />
-      }
+      <React.Suspense fallback={<LoadingComponent show />} >
+        {
+          isSender
+            ?
+            <LazyUserMessageCard
+              content={content}
+              createdDt={createdDt}
+              translationCodeTable={translationCodeTable}
+            />
+            :
+            <LazyGptMessageCard
+              content={content}
+              createdDt={createdDt}
+              translationCodeTable={translationCodeTable}
+            />
+        }
+      </React.Suspense>
     </React.Fragment>
   )
 }

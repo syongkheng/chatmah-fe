@@ -1,5 +1,7 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { Drawer, FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Divider from '@mui/material/Divider';
 import React from 'react';
 import { Locale, StorageKeys } from "../../enums";
@@ -7,13 +9,16 @@ import useNavigation from '../../hooks/useNavigation';
 import { AppStorageUtil } from "../../utils/AppStorageUtil";
 import SquareSpacing from "../spacing/SquareSpacing";
 import { SpacingSize } from "../spacing/SquareSpacing.enum";
-import StyledButton from '../styled/buttons/ButtonComponents';
 import { Clickable } from '../styled/ClickableComponents';
 import { FixedWidthBox, FlexDirectionColumn, HorizontalCenter } from '../styled/alignment/AlignmentComponents';
 import { NoWrapText } from '../styled/typography/Typography';
+import LoadingComponent from '../loader/LoadingComponent';
+
+const LazyStyledButton = React.lazy(() => import('../styled/buttons/ButtonComponents'));
+const LazyDrawer = React.lazy(() => import('@mui/material/Drawer'));
 
 interface IBottomDrawer {
-  setLocale: React.Dispatch<React.SetStateAction<string>>;
+  setLocale: (locale: string) => void;
   isAuthenticated: boolean;
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -77,41 +82,45 @@ export default function BottomDrawer({
       <Clickable onClick={() => setOpenMenu(true)}>
         <MenuIcon />
       </Clickable>
-      <Drawer open={openMenu} onClose={() => setOpenMenu(false)} anchor='bottom'>
-        <HorizontalCenter>
-          <FixedWidthBox width='80svw' maxWidth='520px'>
-            <FlexDirectionColumn>
-              <SquareSpacing spacing={SpacingSize.Large} />
-              <NoWrapText>{getLanguageLabel()}</NoWrapText>
-              <SquareSpacing spacing={SpacingSize.Small} />
-              <FormControl fullWidth>
-                <Select
-                  id="language-select"
-                  value={language}
-                  onChange={handleChange}
-                  size='small'
-                  autoWidth
-                >
-                  <MenuItem value={Locale.en}>English</MenuItem>
-                  <MenuItem value={Locale.cn}>中文</MenuItem>
-                </Select>
-              </FormControl>
-              <SquareSpacing spacing={SpacingSize.Large} />
-              <Divider />
-              <SquareSpacing spacing={SpacingSize.Large} />
-              <StyledButton
-                $primary
-                $fullWidth
-                id="auth-button"
-                onClick={isAuthenticated ? handleLogout : handleLogin}
-              >
-                {isAuthenticated ? getLogoutLabel() : getLoginLabel()}
-              </StyledButton>
-              <SquareSpacing spacing={SpacingSize.ExtraLarge} />
-            </FlexDirectionColumn>
-          </FixedWidthBox>
-        </HorizontalCenter>
-      </Drawer>
+      <React.Suspense fallback={<LoadingComponent show />}>
+        <LazyDrawer open={openMenu} onClose={() => setOpenMenu(false)} anchor='bottom'>
+          <HorizontalCenter>
+            <FixedWidthBox width='80svw' $maxWidth='520px'>
+              <FlexDirectionColumn>
+                <SquareSpacing spacing={SpacingSize.Large} />
+                <NoWrapText>{getLanguageLabel()}</NoWrapText>
+                <SquareSpacing spacing={SpacingSize.Small} />
+                <FormControl fullWidth>
+                  <Select
+                    id="language-select"
+                    value={language}
+                    onChange={handleChange}
+                    size='small'
+                    autoWidth
+                  >
+                    <MenuItem value={Locale.en}>English</MenuItem>
+                    <MenuItem value={Locale.cn}>中文</MenuItem>
+                  </Select>
+                </FormControl>
+                <SquareSpacing spacing={SpacingSize.Large} />
+                <Divider />
+                <SquareSpacing spacing={SpacingSize.Large} />
+                <React.Suspense fallback={<LoadingComponent show />}>
+                  <LazyStyledButton
+                    $primary
+                    $fullWidth
+                    id="auth-button"
+                    onClick={isAuthenticated ? handleLogout : handleLogin}
+                  >
+                    {isAuthenticated ? getLogoutLabel() : getLoginLabel()}
+                  </LazyStyledButton>
+                </React.Suspense>
+                <SquareSpacing spacing={SpacingSize.ExtraLarge} />
+              </FlexDirectionColumn>
+            </FixedWidthBox>
+          </HorizontalCenter>
+        </LazyDrawer>
+      </React.Suspense>
     </>
   )
 }

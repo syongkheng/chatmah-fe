@@ -48,13 +48,13 @@ export const FixedHeightBox = styled.div<IFixedHeight>`
 interface IFixedWidth {
   width: string;
   minWidth?: string;
-  maxWidth?: string;
+  $maxWidth?: string;
 }
 
 export const FixedWidthBox = styled.div<IFixedWidth>`
     width: ${({ width }) => `${width}`};
     ${({ minWidth }) => minWidth ? `min-width: ${minWidth};` : null};
-    ${({ maxWidth }) => maxWidth ? `max-width: ${maxWidth};` : null};
+    ${({ $maxWidth }) => $maxWidth ? `max-width: ${$maxWidth};` : null};
 `;
 
 interface IFullWidthBox {
